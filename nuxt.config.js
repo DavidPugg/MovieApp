@@ -44,7 +44,7 @@ export default {
   buildModules: ["@nuxtjs/style-resources"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/style-resources", "@nuxtjs/axios"],
+  modules: ["@nuxtjs/axios"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
