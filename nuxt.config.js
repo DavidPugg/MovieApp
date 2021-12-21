@@ -56,4 +56,8 @@ export default {
   env: {
     apiKey: "52a247d577cea428067dde5c993fb857",
   },
+
+  server: {
+    port: process.env.PORT || 3000,
+  },
 };
