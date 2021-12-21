@@ -1,0 +1,83 @@
+///////Variables
+$color-primary-light: #84bc9c;
+$color-primary-dark: #2ca58d;
+$color-secondary-light: rgba(57, 62, 70, 0.9);
+$color-secondary-dark: #222831;
+
+$font-primary: "Lato", sans-serif;
+
+$border-radius-small: 1rem;
+$border-radius-medium: 1rem;
+$border-radius-large: 3rem;
+
+$size-large: 75em; //1200px
+$size-medium: 56.25em; //900px
+$size-small: 37.5em; //600px
+
+///RESET
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: $size-small) {
+    font-size: 50%;
+  }
+}
+
+body {
+  font-family: $font-primary;
+  font-weight: 300;
+  line-height: 1.6;
+  background-color: $color-secondary-dark;
+}
+
+////LAYOUT
+
+.container {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(6rem, 1fr) [main-start] repeat(
+      8,
+      [col-start] minmax(min-content, 14rem) [col-end]
+    )
+    [main-end] minmax(6rem, 1fr) [full-end];
+  grid-row-gap: 10rem;
+
+  @media only screen and (max-width: $size-medium) {
+    grid-template-columns:
+    [full-start] minmax(3rem, 1fr) [main-start] repeat(
+      8,
+      [col-start] minmax(min-content, 14rem) [col-end]
+    )
+    [main-end] minmax(3rem, 1fr) [full-end];
+  }
+}
+
+.content {
+  padding: 10rem 0;
+  grid-column: main-start / main-end;
+
+  @media only screen and (max-width: $size-large) {
+    padding: 10rem 1rem;
+  }
+}
+
+////TYPOGRAPHY
+
+.heading-1 {
+  color: white;
+  font-size: 4rem;
+  font-weight: 300;
+}
+
+.heading-2 {
+  color: white;
+  font-size: 3.5rem;
+  font-weight: 600;
+}
