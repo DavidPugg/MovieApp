@@ -123,7 +123,11 @@ export default {
   }
 
   @media only screen and (max-width: $size-medium) {
-    grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+  }
+
+  @media only screen and (max-width: $size-small) {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   }
 }
 

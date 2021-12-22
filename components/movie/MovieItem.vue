@@ -7,10 +7,10 @@
       </div>
       <div class="details">
         <h4 class="title">{{ shortTitle }}</h4>
+        <p class="rating">{{ rating }}</p>
         <p class="released">
           {{ released }}
         </p>
-        <p class="rating">{{ rating }}</p>
       </div>
     </div>
   </NuxtLink>
@@ -71,6 +71,7 @@ export default {
 }
 
 .item {
+  height: 100%;
   background-color: $color-secondary-light;
   border-radius: $border-radius-medium;
   color: #fff;
@@ -81,12 +82,19 @@ export default {
   display: grid;
   grid-template-columns: min-content 1fr;
 
+  transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+
   transition: all 0.1s ease;
+
+  @media only screen and (max-width: $size-small) {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr;
+  }
 
   &:hover {
     // transform: scale(1.05);
-    background-color: darken($color-secondary-light, 5%);
-    box-shadow: 0 0 2rem rgba($color: #000000, $alpha: 0.25);
+    transform: translateY(-0.5rem);
+    box-shadow: 0 1rem 3rem rgba($color: #000000, $alpha: 0.3);
   }
 }
 
@@ -101,7 +109,7 @@ export default {
     width: 100%;
     height: 100%;
 
-    @media only screen and (max-width: $size-medium) {
+    @media only screen and (max-width: $size-small) {
       background-color: rgba($color: #000000, $alpha: 0.6);
     }
   }
@@ -114,6 +122,10 @@ export default {
 
     @media only screen and (max-width: $size-medium) {
       width: 10rem;
+    }
+
+    @media only screen and (max-width: $size-small) {
+      width: 100%;
     }
   }
 
@@ -132,7 +144,7 @@ export default {
     z-index: 1;
     @include rating;
 
-    @media only screen and (max-width: $size-medium) {
+    @media only screen and (max-width: $size-small) {
       opacity: 1;
     }
   }
@@ -144,14 +156,18 @@ export default {
   flex-direction: column;
   padding: 2rem;
 
-  & > *:not(:last-child) {
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid $color-primary-light;
-  }
+  // & > *:not(:last-child) {
+  //   padding-bottom: 1rem;
+  //   margin-bottom: 1rem;
+  //   border-bottom: 1px solid $color-primary-light;
+  // }
 
   @media only screen and (max-width: $size-medium) {
     padding: 1rem;
+  }
+
+  @media only screen and (max-width: $size-small) {
+    justify-content: space-between;
   }
 }
 
@@ -162,9 +178,7 @@ export default {
 }
 
 .released {
-  @media only screen and (max-width: $size-medium) {
-    margin-top: auto;
-  }
+  margin-top: 1rem;
 }
 
 .rating {
@@ -172,6 +186,10 @@ export default {
   @include rating;
 
   @media only screen and (max-width: $size-medium) {
+    font-size: 4rem !important;
+  }
+
+  @media only screen and (max-width: $size-small) {
     display: none;
   }
 }
