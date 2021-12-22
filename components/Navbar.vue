@@ -207,6 +207,7 @@ export default {
   grid-column: 1 / -1;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   align-items: center;
   border-top: 1px solid $color-primary-light;
   padding-top: 2rem;
