@@ -7,7 +7,6 @@
       </div>
       <div class="details">
         <h4 class="title">{{ shortTitle }}</h4>
-        <p class="rating">{{ rating }}</p>
         <p class="released">
           {{ released }}
         </p>
@@ -54,18 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin rating {
-  color: transparent;
-
-  font-size: 5rem;
-  background-image: linear-gradient(
-    to right bottom,
-    $color-primary-light,
-    $color-primary-dark
-  );
-  background-clip: text;
-}
-
 .link {
   text-decoration: none;
 }
@@ -79,22 +66,16 @@ export default {
   overflow: hidden;
   backface-visibility: hidden;
   font-size: 1.6rem;
+
   display: grid;
-  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
 
   transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
-
-  transition: all 0.1s ease;
-
-  @media only screen and (max-width: $size-small) {
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content 1fr;
-  }
 
   &:hover {
     // transform: scale(1.05);
     transform: translateY(-0.5rem);
-    box-shadow: 0 1rem 3rem rgba($color: #000000, $alpha: 0.3);
+    box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.15);
   }
 }
 
@@ -108,45 +89,33 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-
-    @media only screen and (max-width: $size-small) {
-      background-color: rgba($color: #000000, $alpha: 0.6);
-    }
+    background-color: rgba($color: #000000, $alpha: 0.5);
   }
 
   &__img {
-    width: 14rem;
+    width: 100%;
     display: block;
     object-fit: cover;
     object-position: center;
-
-    @media only screen and (max-width: $size-medium) {
-      width: 10rem;
-    }
-
-    @media only screen and (max-width: $size-small) {
-      width: 100%;
-    }
   }
 
   &__rating {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
     font-weight: 600;
     z-index: 1;
-    @include rating;
 
-    @media only screen and (max-width: $size-small) {
-      opacity: 1;
-    }
+    color: transparent;
+    font-size: 5rem;
+    background-image: linear-gradient(
+      to right bottom,
+      $color-primary-light,
+      $color-primary-dark
+    );
+    background-clip: text;
   }
 }
 
@@ -154,21 +123,8 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-
-  // & > *:not(:last-child) {
-  //   padding-bottom: 1rem;
-  //   margin-bottom: 1rem;
-  //   border-bottom: 1px solid $color-primary-light;
-  // }
-
-  @media only screen and (max-width: $size-medium) {
-    padding: 1rem;
-  }
-
-  @media only screen and (max-width: $size-small) {
-    justify-content: space-between;
-  }
+  padding: 1rem;
+  justify-content: space-between;
 }
 
 .title {
@@ -179,18 +135,7 @@ export default {
 
 .released {
   margin-top: 1rem;
-}
-
-.rating {
-  margin-top: auto;
-  @include rating;
-
-  @media only screen and (max-width: $size-medium) {
-    font-size: 4rem !important;
-  }
-
-  @media only screen and (max-width: $size-small) {
-    display: none;
-  }
+  padding-top: 1rem;
+  border-top: 1px solid $color-primary-light;
 }
 </style>

@@ -139,16 +139,12 @@ export default {
     &-main {
       margin-right: 1rem;
       @media only screen and (max-width: $size-medium) {
-        margin: 0;
+        margin-right: 0;
+        margin-bottom: 2rem;
         flex: 0 0 100%;
 
-        display: flex;
-        justify-content: center;
+        text-align: center;
       }
-    }
-
-    @media only screen and (max-width: $size-small) {
-      font-size: 3rem;
     }
   }
 
