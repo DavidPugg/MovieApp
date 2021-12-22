@@ -8,17 +8,6 @@
         <use xlink:href="~/assets/svgs.svg#icon-home"></use>
       </svg>
     </div>
-    <form class="nav__form" @submit.prevent="search">
-      <input
-        class="nav__input"
-        type="text"
-        placeholder="Search"
-        v-model="userInput"
-      />
-      <svg class="nav__icon">
-        <use xlink:href="~/assets/svgs.svg#icon-magnifying-glass"></use>
-      </svg>
-    </form>
   </nav>
 </template>
 
@@ -59,10 +48,7 @@ export default {
 
 <style scoped lang="scss">
 .nav {
-  width: 100%;
-  border-bottom: 1px solid $color-primary-light;
-  background-color: $color-secondary-dark;
-  border-radius: $border-radius-small;
+  width: 20rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
@@ -72,11 +58,9 @@ export default {
   &__icons {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-  }
+    justify-content: space-around;
+    grid-column: 1 / -1;
 
-  &__back-arrow, &__icon-house {
-    margin-left: 5rem;
   }
 
   &__back-arrow {
@@ -98,16 +82,6 @@ export default {
 
     &:hover {
       fill: $color-primary-dark;
-    }
-  }
-
-  &__form {
-    grid-column: span 1;
-    display: flex;
-    align-items: center;
-
-    @media only screen and (max-width: $size-medium) {
-      grid-column: span 2;
     }
   }
 

@@ -8,7 +8,7 @@
     <div class="content">
       <div class="head">
         <h2 class="head__title heading-1">
-          {{ movie.original_title }}
+          <span class="head__title-main">{{ movie.original_title }}</span>
           <span class="genre" v-for="genre in movie.genres" :key="genre.id">{{
             genre.name
           }}</span>
@@ -131,6 +131,25 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
+    @media only screen and (max-width: $size-medium) {
+      justify-content: center;
+    }
+
+    &-main {
+      margin-right: 1rem;
+      @media only screen and (max-width: $size-medium) {
+        margin: 0;
+        flex: 0 0 100%;
+
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    @media only screen and (max-width: $size-small) {
+      font-size: 3rem;
+    }
   }
 
   &__ratings {
@@ -138,6 +157,10 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    @media only screen and (max-width: $size-medium) {
+      display: none;
+    }
   }
 
   &__rating-box,
@@ -228,6 +251,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: $size-medium) {
+    grid-column: 1 / -1;
+  }
 }
 
 .details {

@@ -111,8 +111,7 @@ export default {
   grid-column: main-start / main-end;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
-  grid-template-rows: repeat(auto-fit, 20rem);
+  grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
   justify-content: center;
   grid-gap: 2rem;
 
@@ -121,6 +120,10 @@ export default {
 
   &:hover > *:not(:hover) {
     z-index: 1000;
+  }
+
+  @media only screen and (max-width: $size-medium) {
+    grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
   }
 }
 

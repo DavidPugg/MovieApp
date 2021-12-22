@@ -7,12 +7,12 @@
   >
     <div class="content">
       <div class="head">
-        <h1 class="head__title heading-1">
-          {{ movie.name }}
+        <h2 class="head__title heading-1">
+          <span class="head__title-main">{{ movie.name }}</span>
           <span class="genre" v-for="genre in movie.genres" :key="genre.id">{{
             genre.name
           }}</span>
-        </h1>
+        </h2>
         <div class="head__ratings">
           <div class="head__rating-box">
             <p><b>Rating</b></p>
@@ -110,19 +110,46 @@ export default {
 .head {
   grid-column: 1 / -1;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: space-around;
+
+  @media only screen and (max-width: $size-medium) {
+    justify-content: center;
+  }
 
   &__title {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
+    @media only screen and (max-width: $size-medium) {
+      justify-content: center;
+    }
+
+    &-main {
+      margin-right: 1rem;
+      @media only screen and (max-width: $size-medium) {
+        margin: 0;
+        flex: 0 0 100%;
+
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    @media only screen and (max-width: $size-small) {
+      font-size: 3rem;
+    }
   }
 
   &__ratings {
     flex: 0 0 20%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
+
+    @media only screen and (max-width: $size-medium) {
+      display: none;
+    }
   }
 
   &__rating-box,
@@ -175,11 +202,9 @@ export default {
   display: flex;
   flex-direction: column;
 
-  
-      @media only screen and (max-width: $size-medium) {
-      grid-column:  1 / -1;
-    }
-
+  @media only screen and (max-width: $size-medium) {
+    grid-column: 1 / -1;
+  }
 
   &__video {
     width: 100%;
@@ -225,11 +250,9 @@ export default {
   flex-direction: column;
   font-size: 1.6rem;
 
-  
-      @media only screen and (max-width: $size-medium) {
-      grid-column:  1 / -1;
-    }
-
+  @media only screen and (max-width: $size-medium) {
+    grid-column: 1 / -1;
+  }
 
   & > *:not(:last-child) {
     padding-bottom: 2rem;

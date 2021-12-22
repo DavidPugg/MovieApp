@@ -1,7 +1,10 @@
 <template>
   <NuxtLink class="link" :to="goTo">
     <div class="item">
-      <img class="img" :src="fullPoster" alt="" />
+      <div class="head">
+        <img class="head__img" :src="fullPoster" alt="" />
+        <p class="head__rating">{{ rating }}</p>
+      </div>
       <div class="details">
         <h4 class="title">{{ shortTitle }}</h4>
         <p class="released">
@@ -44,13 +47,25 @@ export default {
     },
     shortTitle() {
       if (this.title.length <= 30) return this.title;
-      return this.title.substring(0,29) + '...';
-    }
+      return this.title.substring(0, 29) + "...";
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@mixin rating {
+  color: transparent;
+
+  font-size: 5rem;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-primary-light,
+    $color-primary-dark
+  );
+  background-clip: text;
+}
+
 .link {
   text-decoration: none;
 }
@@ -63,7 +78,8 @@ export default {
   overflow: hidden;
   backface-visibility: hidden;
   font-size: 1.6rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content 1fr;
 
   transition: all 0.1s ease;
 
@@ -74,11 +90,52 @@ export default {
   }
 }
 
-.img {
-  max-width: 35%;
-  max-height: 20rem;
-  object-fit: cover;
-  object-position: center;
+.head {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    @media only screen and (max-width: $size-medium) {
+      background-color: rgba($color: #000000, $alpha: 0.6);
+    }
+  }
+
+  &__img {
+    width: 14rem;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+
+    @media only screen and (max-width: $size-medium) {
+      width: 10rem;
+    }
+  }
+
+  &__rating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    z-index: 1;
+    @include rating;
+
+    @media only screen and (max-width: $size-medium) {
+      opacity: 1;
+    }
+  }
 }
 
 .details {
@@ -87,35 +144,35 @@ export default {
   flex-direction: column;
   padding: 2rem;
 
-  & > *:not(:last-child, :first-child) {
+  & > *:not(:last-child) {
     padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $color-primary-light;
+  }
+
+  @media only screen and (max-width: $size-medium) {
+    padding: 1rem;
   }
 }
 
 .title {
-  border-bottom: 1px solid $color-primary-light;
   line-height: 1.2;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   letter-spacing: 0.3rem;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
+}
+
+.released {
+  @media only screen and (max-width: $size-medium) {
+    margin-top: auto;
+  }
 }
 
 .rating {
   margin-top: auto;
-  border: none;
-  color: transparent;
+  @include rating;
 
-  font-size: 5rem;
-  background-image: linear-gradient(
-    to right bottom,
-    $color-primary-light,
-    $color-primary-dark
-  );
-  background-clip: text;
-}
-
-.released {
-  border-bottom: 1px solid $color-primary-light;
+  @media only screen and (max-width: $size-medium) {
+    display: none;
+  }
 }
 </style>

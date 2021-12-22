@@ -153,6 +153,15 @@ export default {
   &__img {
     width: 100%;
     border-radius: $border-radius-medium;
+    max-width: 30rem;
+
+    @media only screen and (max-width: $size-medium) {
+      margin: 0 auto;
+    }
+  }
+
+  @media only screen and (max-width: $size-medium) {
+    grid-column: 1 / -1;
   }
 }
 
@@ -180,6 +189,11 @@ export default {
       text-align: center;
     }
   }
+
+  @media only screen and (max-width: $size-medium) {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
 }
 
 .movies,
@@ -200,7 +214,7 @@ export default {
 
   &-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     justify-items: center;
   }
 }

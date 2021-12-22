@@ -33,7 +33,7 @@ export default {
 
 .cast {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
   margin-top: 2rem;
