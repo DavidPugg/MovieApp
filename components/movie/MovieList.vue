@@ -136,7 +136,7 @@ export default {
 .list {
   flex: 0 0 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   justify-content: center;
   grid-gap: 2rem;
 }
