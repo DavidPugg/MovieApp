@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink class="movie" :to="{ path: `/${isMovie}/${movie.id}` }">
+  <NuxtLink class="movie" :to="{ path: `/title/${isMovie}/${movie.id}` }">
     <img
       class="movie__img"
       :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`"
@@ -18,7 +18,7 @@ export default {
       return this.movie.title ? this.movie.title : this.movie.name
     },
     isMovie() {
-      return this.movie.title ? 'movie' : 'show'
+      return this.movie.title ? 'movie' : 'tv'
     }
   }
 };

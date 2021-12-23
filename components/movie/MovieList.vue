@@ -132,7 +132,7 @@ export default {
   align-self: flex-start;
   justify-self: center;
 }
-.loader {
+.loader, .text {
   margin: 10rem auto;
 }
 </style>

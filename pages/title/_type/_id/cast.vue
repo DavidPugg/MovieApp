@@ -16,7 +16,7 @@ export default {
 
   async asyncData({ $axios, params }) {
     const credits = await $axios.$get(
-      `https://api.themoviedb.org/3/tv/${params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
+      `https://api.themoviedb.org/3/${params.type}/${params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
     );
     return { cast: credits.cast };
   },

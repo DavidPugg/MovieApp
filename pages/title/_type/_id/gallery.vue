@@ -22,7 +22,7 @@ export default {
     layout: 'noNavbar',
   async asyncData({ $axios, params }) {
     const { results } = await $axios.$get(
-      `https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
+      `https://api.themoviedb.org/3/${params.type}/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
     );
     return { videos: results };
   },

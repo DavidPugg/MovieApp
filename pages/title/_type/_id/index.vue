@@ -8,7 +8,7 @@
     <div class="content">
       <div class="head">
         <h2 class="head__title heading-1">
-          <span class="head__title-main">{{ movie.original_title }}</span>
+          <span class="head__title-main">{{ title }}</span>
           <span
             class="head__title-genre"
             v-for="genre in movie.genres"
@@ -32,20 +32,15 @@
           obcaecati quidem blanditiis! Autem.
         </p>
         <div class="details__stats">
-          <p class="details__budget"><b>Budget: </b> ${{ movie.budget }}</p>
-          <p class="details__revenue"><b>Revenue: </b> ${{ movie.revenue }}</p>
-          <p class="details__runtime">
-            <b>Runtime: </b> {{ movie.runtime }}min
+          <p class="details__budget">
+            <b>{{ statOneText }}</b>
+            {{ statOne }}
           </p>
+          <p class="details__revenue">
+            <b>{{ statTwoText }}</b> {{ statTwo }}
+          </p>
+          <p class="details__runtime"><b>Runtime: </b> {{ statThree }}min</p>
         </div>
-        <!-- <div class="details__logos" v-if="companies.length">
-          <img
-            v-for="company in companies"
-            :key="company.id"
-            :src="`https://image.tmdb.org/t/p/w200${company.logo_path}`"
-            :alt="company.name"
-          />
-        </div> -->
       </div>
       <div class="gallery" v-if="trailer">
         <iframe
@@ -83,19 +78,42 @@
 export default {
   layout: "noNavbar",
   computed: {
-    companies() {
-      return this.movie.production_companies.filter((e) => e.logo_path);
+    title() {
+      return this.$route.params.type == "tv"
+        ? this.movie.name
+        : this.movie.original_title;
+    },
+    statOne() {
+      return this.$route.params.type == "tv"
+        ? this.movie.number_of_seasons
+        : this.movie.budget;
+    },
+    statTwo() {
+      return this.$route.params.type == "tv"
+        ? this.movie.number_of_episodes
+        : this.movie.revenue;
+    },
+    statThree() {
+      return this.$route.params.type == "tv"
+        ? this.movie.episode_run_time[0]
+        : this.movie.runtime;
+    },
+    statOneText() {
+      return this.$route.params.type == "tv" ? "Seasons: " : "Budget: $";
+    },
+    statTwoText() {
+      return this.$route.params.type == "tv" ? "Episodes: " : "Revenue: $";
     },
   },
   async asyncData({ $axios, params }) {
     const movie = await $axios.$get(
-      `https://api.themoviedb.org/3/movie/${params.id}?api_key=${process.env.apiKey}&language=en-US`
+      `https://api.themoviedb.org/3/${params.type}/${params.id}?api_key=${process.env.apiKey}&language=en-US`
     );
     const videos = await $axios.$get(
-      `https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
+      `https://api.themoviedb.org/3/${params.type}/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
     );
     const credits = await $axios.$get(
-      `https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
+      `https://api.themoviedb.org/3/${params.type}/${params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
     );
     const trailer = videos.results.find((t) => t.type == "Trailer");
     return { movie, trailer, cast: credits.cast };

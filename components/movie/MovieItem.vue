@@ -38,9 +38,9 @@ export default {
     },
     goTo() {
       if (this.$route.name === "tvshows") {
-        return `show/${this.id}`;
+        return `title/tv/${this.id}`;
       } else {
-        return `movie/${this.id}`;
+        return `title/movie/${this.id}`;
       }
     },
     shortTitle() {
@@ -120,7 +120,7 @@ export default {
   letter-spacing: 0.3rem;
   z-index: 1;
   height: 8rem;
-  padding: 2rem .5rem;
+  padding: 2rem 0.5rem;
   padding-top: 3rem;
   display: flex;
   align-items: center;
