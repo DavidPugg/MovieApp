@@ -1,6 +1,8 @@
 <template>
   <main class="container">
-    <Dropdown class="dropdown" :items="movieLinks" />
+    <div class="dropdown">
+      <Dropdown :items="movieLinks" />
+    </div>
     <MovieList />
   </main>
 </template>

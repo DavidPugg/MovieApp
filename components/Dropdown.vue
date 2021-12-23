@@ -70,9 +70,7 @@ export default {
   font-size: 1.8rem;
   user-select: none;
   z-index: 1000;
-  margin-left: auto;
   backface-visibility: hidden;
-  width: 20.8rem;
 
   border-top-left-radius: $border-radius-medium;
   border-top-right-radius: $border-radius-medium;
