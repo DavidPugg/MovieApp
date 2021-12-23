@@ -9,24 +9,27 @@
       <div class="head">
         <h2 class="head__title heading-1">
           <span class="head__title-main">{{ movie.name }}</span>
-          <span class="genre" v-for="genre in movie.genres" :key="genre.id">{{
-            genre.name
-          }}</span>
+          <span
+            class="head__title-genre"
+            v-for="genre in movie.genres"
+            :key="genre.id"
+            >{{ genre.name }}</span
+          >
         </h2>
-        <div class="head__ratings">
-          <div class="head__rating-box">
-            <p><b>Rating</b></p>
-            <p class="head__rating">{{ movie.vote_average }}</p>
-          </div>
-          <div class="head__popularity-box">
-            <p><b>Popularity</b></p>
-            <p class="head__popularity">#{{ Math.round(movie.popularity) }}</p>
-          </div>
+        <div class="head__rating-box">
+          <p><b>Rating</b></p>
+          <p class="head__rating">{{ movie.vote_average }}</p>
         </div>
       </div>
       <div class="details">
-        <p class="details__overview">
+        <p class="details__overview" v-if="movie.overview">
           {{ movie.overview }}
+        </p>
+        <p class="details__overview" v-else>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
+          at fugiat blanditiis dignissimos inventore doloremque harum hic magnam
+          quod tempore, laboriosam, similique repellat? Illo voluptatem animi
+          obcaecati quidem blanditiis! Autem.
         </p>
         <div class="details__stats">
           <p class="details__budget">
@@ -110,7 +113,11 @@ export default {
 .head {
   grid-column: 1 / -1;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+
+  @media only screen and (max-width: $size-medium) {
+    flex-direction: column;
+  }
 
   &__title {
     display: flex;
@@ -122,31 +129,38 @@ export default {
     }
 
     &-main {
-      margin-right: 1rem;
+      margin-bottom: 1rem;
+      flex: 0 0 100%;
       @media only screen and (max-width: $size-medium) {
-        margin-right: 0;
-        margin-bottom: 2rem;
-        flex: 0 0 100%;
-
         text-align: center;
+      }
+    }
+
+    &-genre {
+      font-size: 1.3rem;
+      border: 2px solid $color-primary-dark;
+      padding: 0.5rem 1rem;
+      border-radius: $border-radius-medium;
+
+      &:first-child {
+        margin-left: 2rem;
+      }
+
+      &:not(:last-child) {
+        margin-right: 1rem;
       }
     }
   }
 
-  &__ratings {
-    flex: 0 0 20%;
+  &__rating-box {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 
     @media only screen and (max-width: $size-medium) {
-      display: none;
+      margin-top: 2rem;
     }
-  }
-
-  &__rating-box,
-  &__popularity-box {
-    text-align: center;
 
     p:first-child {
       text-transform: uppercase;
@@ -155,8 +169,7 @@ export default {
     }
   }
 
-  &__rating,
-  &__popularity {
+  &__rating {
     border: none;
     color: transparent;
     line-height: 1;
@@ -169,21 +182,6 @@ export default {
       $color-primary-dark
     );
     background-clip: text;
-  }
-}
-
-.genre {
-  font-size: 1.3rem;
-  border: 2px solid $color-primary-dark;
-  padding: 0.5rem 1rem;
-  border-radius: 10rem;
-
-  &:first-child {
-    margin-left: 2rem;
-  }
-
-  &:not(:last-child) {
-    margin-right: 1rem;
   }
 }
 
@@ -243,6 +241,7 @@ export default {
   font-size: 1.6rem;
 
   @media only screen and (max-width: $size-medium) {
+    text-align: center;
     grid-column: 1 / -1;
   }
 
