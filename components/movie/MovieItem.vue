@@ -1,16 +1,15 @@
 <template>
   <NuxtLink class="link" :to="goTo">
     <div class="item">
-      <div class="head">
-        <img class="head__img" :src="fullPoster" alt="" />
-        <p class="head__rating">{{ rating }}</p>
-      </div>
-      <div class="details">
+      <img class="img" :src="fullPoster" alt="" />
+      <p class="rating">{{ rating }}</p>
+      <h4 class="title">{{ shortTitle }}</h4>
+      <!-- <div class="details">
         <h4 class="title">{{ shortTitle }}</h4>
         <p class="released">
           {{ released }}
         </p>
-      </div>
+      </div> -->
     </div>
   </NuxtLink>
 </template>
@@ -58,6 +57,7 @@ export default {
 }
 
 .item {
+  position: relative;
   height: 100%;
   background-color: $color-secondary-light;
   border-radius: $border-radius-medium;
@@ -66,9 +66,7 @@ export default {
   overflow: hidden;
   backface-visibility: hidden;
   font-size: 1.6rem;
-
-  display: grid;
-  grid-template-rows: min-content 1fr;
+  user-select: none;
 
   transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
 
@@ -77,10 +75,6 @@ export default {
     transform: translateY(-0.5rem);
     box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.15);
   }
-}
-
-.head {
-  position: relative;
 
   &::after {
     content: "";
@@ -89,34 +83,53 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.5);
+    background-color: rgba($color: #000000, $alpha: 0.6);
   }
+}
 
-  &__img {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center;
-  }
+.img {
+  width: 100%;
+  height: 100%;
+}
 
-  &__rating {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    font-weight: 600;
-    z-index: 1;
+.rating {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  z-index: 1;
 
-    color: transparent;
-    font-size: 5rem;
-    background-image: linear-gradient(
-      to right bottom,
-      $color-primary-light,
-      $color-primary-dark
-    );
-    background-clip: text;
-  }
+  color: transparent;
+  font-size: 5rem;
+  background-image: linear-gradient(
+    to right bottom,
+    $color-primary-light,
+    $color-primary-dark
+  );
+  background-clip: text;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  line-height: 1.2;
+  font-size: 1.6rem;
+  letter-spacing: 0.3rem;
+  z-index: 1;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-image: linear-gradient(
+    to right bottom,
+    rgba($color-primary-light, .3),
+    rgba($color-primary-dark, .4)
+  );
 }
 
 .details {
@@ -126,13 +139,6 @@ export default {
   padding: 1rem;
   justify-content: space-between;
 }
-
-.title {
-  line-height: 1.2;
-  font-size: 1.6rem;
-  letter-spacing: 0.3rem;
-}
-
 .released {
   margin-top: 1rem;
   padding-top: 1rem;

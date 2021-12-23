@@ -1,6 +1,6 @@
 <template>
   <section class="movies">
-    <div v-if="$fetchState.pending" class="lds-ring center">
+    <div v-if="$fetchState.pending" class="lds-ring">
       <div></div>
       <div></div>
       <div></div>
@@ -9,21 +9,23 @@
     <p v-if="checkItems && !$fetchState.pending" class="text">
       No movies found!
     </p>
-    <MovieItem
-      v-else-if="!$fetchState.pending"
-      v-for="item in items"
-      :key="item.id"
-      :id="item.id"
-      :poster="item.poster_path"
-      :title="item.title"
-      :genre="item.genre_ids"
-      :rating="item.vote_average"
-      :released="item.release_date"
-    />
-    <PageSelector
-      v-if="!$fetchState.pending && !checkItems"
-      :pages="totalPages"
-    />
+    <div class="list" v-else-if="!$fetchState.pending">
+      <SortDropdown/>
+      <MovieItem
+        v-for="item in items"
+        :key="item.id"
+        :id="item.id"
+        :poster="item.poster_path"
+        :title="item.title"
+        :genre="item.genre_ids"
+        :rating="item.vote_average"
+        :released="item.release_date"
+      />
+      <PageSelector
+        v-if="!$fetchState.pending && !checkItems"
+        :pages="totalPages"
+      />
+    </div>
   </section>
 </template>
 
@@ -110,10 +112,8 @@ export default {
 .movies {
   grid-column: main-start / main-end;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  display: flex;
   justify-content: center;
-  grid-gap: 2rem;
 
   line-height: 1;
   margin-bottom: 10rem;
@@ -121,10 +121,6 @@ export default {
   &:hover > *:not(:hover) {
     z-index: 1000;
   }
-}
-
-.center {
-  margin: 10rem auto;
 }
 
 .text {
@@ -135,5 +131,13 @@ export default {
   font-size: 5rem;
   align-self: flex-start;
   justify-self: center;
+}
+
+.list {
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  justify-content: center;
+  grid-gap: 2rem;
 }
 </style>

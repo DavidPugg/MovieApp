@@ -3,13 +3,13 @@
     <div class="container">
       <div class="nav">
         <NuxtLink
-          :to="{ name: 'tvshows' }"
+          :to="{ name: 'tvshows', query: { q: 'popular' } }"
           class="select"
           :class="{ selected: $route.name === 'tvshows' }"
           >Tv Shows</NuxtLink
         >
         <NuxtLink
-          :to="{ name: 'movies' }"
+          :to="{ name: 'movies', query: { q: 'popular' } }"
           class="select"
           :class="{ selected: $route.name === 'movies' }"
           >Movies</NuxtLink
@@ -25,70 +25,6 @@
             <use xlink:href="~/assets/svgs.svg#icon-magnifying-glass"></use>
           </svg>
         </form>
-        <div v-if="$route.name == 'tvshows'" class="sort">
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'tvshows', query: { q: 'latest' } }"
-            :class="{ selected: $route.query.q == 'latest' }"
-            >Latest</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'tvshows', query: { q: 'airing_today' } }"
-            :class="{ selected: $route.query.q == 'airing_today' }"
-            >Airing today</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'tvshows', query: { q: 'popular' } }"
-            :class="{ selected: $route.query.q == 'popular' }"
-            >Popular</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'tvshows', query: { q: 'on_the_air' } }"
-            :class="{ selected: $route.query.q == 'on_the_air' }"
-            >On the air</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'tvshows', query: { q: 'top_rated' } }"
-            :class="{ selected: $route.query.q == 'top_rated' }"
-            >Top rated</NuxtLink
-          >
-        </div>
-        <div v-else class="sort">
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'movies', query: { q: 'latest' } }"
-            :class="{ selected: $route.query.q == 'latest' }"
-            >Latest</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'movies', query: { q: 'top_rated' } }"
-            :class="{ selected: $route.query.q == 'top_rated' }"
-            >Top rated</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'movies', query: { q: 'popular' } }"
-            :class="{ selected: $route.query.q == 'popular' }"
-            >Popular</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'movies', query: { q: 'now_playing' } }"
-            :class="{ selected: $route.query.q == 'now_playing' }"
-            >Now playing</NuxtLink
-          >
-          <NuxtLink
-            class="nav__path"
-            :to="{ name: 'movies', query: { q: 'upcoming' } }"
-            :class="{ selected: $route.query.q == 'upcoming' }"
-            >Upcoming</NuxtLink
-          >
-        </div>
       </div>
     </div>
   </nav>
@@ -178,39 +114,6 @@ export default {
   &__input:hover ~ &__icon {
     transform: scale(1.05);
   }
-
-  &__path {
-    text-decoration: none;
-    color: #fff;
-    font-size: 1.6rem;
-    align-self: center;
-    justify-self: center;
-    padding: 1rem 2rem;
-    border-radius: $border-radius-medium;
-    transition: all 0.2s ease-out;
-    overflow: hidden;
-
-    &:hover {
-      transform: translateY(-3px);
-      background-color: $color-secondary-dark;
-      box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.2);
-    }
-
-    &:active,
-    &:focus {
-      transform: translateY(0);
-    }
-  }
-}
-
-.sort {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  align-items: center;
-  border-top: 1px solid $color-primary-light;
-  padding-top: 2rem;
 }
 
 .select {
@@ -246,4 +149,5 @@ export default {
   background-color: $color-secondary-dark;
   font-weight: 600;
 }
+
 </style>
