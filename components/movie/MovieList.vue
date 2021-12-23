@@ -1,6 +1,6 @@
 <template>
   <section class="movies">
-    <div v-if="$fetchState.pending" class="lds-ring">
+    <div v-if="$fetchState.pending" class="lds-ring loader">
       <div></div>
       <div></div>
       <div></div>
@@ -9,23 +9,21 @@
     <p v-if="checkItems && !$fetchState.pending" class="text">
       No movies found!
     </p>
-    <div class="list" v-else-if="!$fetchState.pending">
-      <Dropdown :initialText="dropdownText" :items="dropdownItems" />
-      <MovieItem
-        v-for="item in items"
-        :key="item.id"
-        :id="item.id"
-        :poster="item.poster_path"
-        :title="item.title"
-        :genre="item.genre_ids"
-        :rating="item.vote_average"
-        :released="item.release_date"
-      />
-      <PageSelector
-        v-if="!$fetchState.pending && !checkItems"
-        :pages="totalPages"
-      />
-    </div>
+    <MovieItem
+      v-else-if="!$fetchState.pending"
+      v-for="item in items"
+      :key="item.id"
+      :id="item.id"
+      :poster="item.poster_path"
+      :title="item.title"
+      :genre="item.genre_ids"
+      :rating="item.vote_average"
+      :released="item.release_date"
+    />
+    <PageSelector
+      v-if="!$fetchState.pending && !checkItems"
+      :pages="totalPages"
+    />
   </section>
 </template>
 
@@ -39,50 +37,6 @@ export default {
     return {
       items: [],
       totalPages: null,
-      showLinks: [
-        {
-          name: "Latest",
-          to: "latest",
-        },
-        {
-          name: "Airing Today",
-          to: "airing_today",
-        },
-        {
-          name: "Popular",
-          to: "popular",
-        },
-        {
-          name: "On the air",
-          to: "on_the_air",
-        },
-        {
-          name: "Top rated",
-          to: "top_rated",
-        },
-      ],
-      movieLinks: [
-        {
-          name: "Latest",
-          to: "latest",
-        },
-        {
-          name: "Top rated",
-          to: "top_rated",
-        },
-        {
-          name: "Popular",
-          to: "popular",
-        },
-        {
-          name: "Now playing",
-          to: "now_playing",
-        },
-        {
-          name: "Upcoming",
-          to: "upcoming",
-        },
-      ],
     };
   },
 
@@ -94,19 +48,6 @@ export default {
       return typeof this.items === "undefined" || this.items.length < 1
         ? true
         : false;
-    },
-    dropdownText() {
-      if (!this.$route.query.q) return "Popular";
-      if (this.$route.name == "tvshows") {
-        return this.showLinks.find((e) => e.to == this.$route.query.q).name;
-      }
-      return this.movieLinks.find((e) => e.to == this.$route.query.q).name;
-    },
-    dropdownItems() {
-      if (this.$route.name == "tvshows") {
-        return this.showLinks.filter((e) => e.to != this.$route.query.q);
-      }
-      return this.movieLinks.filter((e) => e.to != this.$route.query.q);
     },
   },
 
@@ -169,8 +110,10 @@ export default {
 .movies {
   grid-column: main-start / main-end;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   justify-content: center;
+  grid-gap: 2rem;
 
   line-height: 1;
   margin-bottom: 10rem;
@@ -189,12 +132,7 @@ export default {
   align-self: flex-start;
   justify-self: center;
 }
-
-.list {
-  flex: 0 0 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  justify-content: center;
-  grid-gap: 2rem;
+.loader {
+  margin: 10rem auto;
 }
 </style>

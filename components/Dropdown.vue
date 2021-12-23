@@ -1,7 +1,7 @@
 <template>
   <div class="sort" @click.stop="showDropdown">
     <p class="sort-current">
-      {{ initialText }}
+      {{ mainName }}
       <svg class="sort-current-arrow" :class="{ rotateArrow: dropdown }">
         <use xlink:href="~/assets/svgs.svg#icon-chevron-left"></use>
       </svg>
@@ -16,8 +16,10 @@
         <NuxtLink
           v-for="item in items"
           :key="item.name"
+          @click.native="setName(item.name)"
           class="sort-dropdown__item"
-          :to="{ name: $route.name, query: { q: item.to } }"
+          :class="{hidden: mainName == item.name}"
+          :to="{ name: $route.name, query: { q: item.value } }"
           >{{ item.name }}</NuxtLink
         >
       </div>
@@ -27,25 +29,26 @@
 
 <script>
 export default {
-  props: ['initialText', 'items'],
+  props: ['items'],
   data() {
     return {
       dropdown: false,
+      name: '',
     };
   },
   computed: {
-    dropdownText() {
-      if (!this.$route.query.q) return "Popular";
-      if (this.$route.name == "tvshows") {
-        return this.showLinks.find((e) => e.to == this.$route.query.q).name;
-      }
-      return this.movieLinks.find((e) => e.to == this.$route.query.q).name;
-    },
+    mainName() {
+      return this.name == '' ? this.items[0].name : this.name
+    }
   },
   methods: {
     showDropdown() {
       this.dropdown = !this.dropdown;
     },
+    setName(name) {
+      this.dropdown = false;
+      this.name = name;
+    }
   },
 };
 </script>
@@ -122,6 +125,10 @@ export default {
       }
     }
   }
+}
+
+.hidden {
+  display: none;
 }
 
 .rotateArrow {

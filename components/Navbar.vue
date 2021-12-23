@@ -55,14 +55,12 @@ export default {
   background-color: $color-secondary-light;
   margin-bottom: 10rem;
   border-bottom: 1px solid $color-primary-light;
-  border-bottom-left-radius: $border-radius-small;
-  border-bottom-right-radius: $border-radius-small;
 }
 
 .nav {
   grid-column: main-start / main-end;
   text-align: center;
-  padding: 2rem 0;
+  padding: 1rem 0;
 
   display: grid;
   grid-template-columns: repeat(8, minmax(min-content, 15rem));
