@@ -1,7 +1,7 @@
 <template>
   <div class="sort" @click.stop="showDropdown">
     <p class="sort-current">
-      {{ dropdownText }}
+      {{ initialText }}
       <svg class="sort-current-arrow" :class="{ rotateArrow: dropdown }">
         <use xlink:href="~/assets/svgs.svg#icon-chevron-left"></use>
       </svg>
@@ -14,11 +14,11 @@
         v-click-outside="showDropdown"
       >
         <NuxtLink
-          v-for="link in links"
-          :key="link.name"
+          v-for="item in items"
+          :key="item.name"
           class="sort-dropdown__item"
-          :to="{ name: $route.name, query: { q: link.to } }"
-          >{{ link.name }}</NuxtLink
+          :to="{ name: $route.name, query: { q: item.to } }"
+          >{{ item.name }}</NuxtLink
         >
       </div>
     </transition>
@@ -27,54 +27,10 @@
 
 <script>
 export default {
+  props: ['initialText', 'items'],
   data() {
     return {
-      userInput: "",
       dropdown: false,
-      showLinks: [
-        {
-          name: "Latest",
-          to: "latest",
-        },
-        {
-          name: "Airing Today",
-          to: "airing_today",
-        },
-        {
-          name: "Popular",
-          to: "popular",
-        },
-        {
-          name: "On the air",
-          to: "on_the_air",
-        },
-        {
-          name: "Top rated",
-          to: "top_rated",
-        },
-      ],
-      movieLinks: [
-        {
-          name: "Latest",
-          to: "latest",
-        },
-        {
-          name: "Top rated",
-          to: "top_rated",
-        },
-        {
-          name: "Popular",
-          to: "popular",
-        },
-        {
-          name: "Now playing",
-          to: "now_playing",
-        },
-        {
-          name: "Upcoming",
-          to: "upcoming",
-        },
-      ],
     };
   },
   computed: {
@@ -84,12 +40,6 @@ export default {
         return this.showLinks.find((e) => e.to == this.$route.query.q).name;
       }
       return this.movieLinks.find((e) => e.to == this.$route.query.q).name;
-    },
-    links() {
-      if (this.$route.name == "tvshows") {
-        return this.showLinks.filter((e) => e.to != this.$route.query.q);
-      }
-      return this.movieLinks.filter((e) => e.to != this.$route.query.q);
     },
   },
   methods: {
@@ -105,7 +55,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 1.5rem 2.5rem;
   color: white;
   transition: all 0.2s ease;
   background-color: $color-secondary-light;

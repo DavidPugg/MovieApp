@@ -10,7 +10,7 @@
       No movies found!
     </p>
     <div class="list" v-else-if="!$fetchState.pending">
-      <SortDropdown/>
+      <Dropdown :initialText="dropdownText" :items="dropdownItems" />
       <MovieItem
         v-for="item in items"
         :key="item.id"
@@ -39,6 +39,50 @@ export default {
     return {
       items: [],
       totalPages: null,
+      showLinks: [
+        {
+          name: "Latest",
+          to: "latest",
+        },
+        {
+          name: "Airing Today",
+          to: "airing_today",
+        },
+        {
+          name: "Popular",
+          to: "popular",
+        },
+        {
+          name: "On the air",
+          to: "on_the_air",
+        },
+        {
+          name: "Top rated",
+          to: "top_rated",
+        },
+      ],
+      movieLinks: [
+        {
+          name: "Latest",
+          to: "latest",
+        },
+        {
+          name: "Top rated",
+          to: "top_rated",
+        },
+        {
+          name: "Popular",
+          to: "popular",
+        },
+        {
+          name: "Now playing",
+          to: "now_playing",
+        },
+        {
+          name: "Upcoming",
+          to: "upcoming",
+        },
+      ],
     };
   },
 
@@ -50,6 +94,19 @@ export default {
       return typeof this.items === "undefined" || this.items.length < 1
         ? true
         : false;
+    },
+    dropdownText() {
+      if (!this.$route.query.q) return "Popular";
+      if (this.$route.name == "tvshows") {
+        return this.showLinks.find((e) => e.to == this.$route.query.q).name;
+      }
+      return this.movieLinks.find((e) => e.to == this.$route.query.q).name;
+    },
+    dropdownItems() {
+      if (this.$route.name == "tvshows") {
+        return this.showLinks.filter((e) => e.to != this.$route.query.q);
+      }
+      return this.movieLinks.filter((e) => e.to != this.$route.query.q);
     },
   },
 

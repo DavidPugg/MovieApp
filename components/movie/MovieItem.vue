@@ -83,7 +83,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.6);
+    background-color: rgba($color: #000000, $alpha: 0.4);
   }
 }
 
@@ -112,23 +112,25 @@ export default {
 
 .title {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   color: white;
-  line-height: 1.2;
   font-size: 1.6rem;
   letter-spacing: 0.3rem;
   z-index: 1;
-  height: 5rem;
+  height: 8rem;
+  padding: 2rem .5rem;
+  padding-top: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 20%);
 
   background-image: linear-gradient(
     to right bottom,
-    rgba($color-primary-light, .3),
-    rgba($color-primary-dark, .4)
+    rgba($color-primary-light, 0.8),
+    rgba($color-primary-dark, 0.9)
   );
 }
 
