@@ -16,7 +16,7 @@
         <NuxtLink
           v-for="item in items"
           :key="item.name"
-          @click.native="setName(item.name)"
+          @click.native="showDropdown"
           class="sort-dropdown__item"
           :class="{ hidden: mainName == item.name }"
           :to="{ name: $route.name, query: { q: item.value } }"
@@ -66,7 +66,7 @@ export default {
   position: relative;
   font-size: 1.8rem;
   user-select: none;
-  z-index: 1000;
+  z-index: 2000;
   backface-visibility: hidden;
 
   border-top-left-radius: $border-radius-medium;
@@ -80,6 +80,7 @@ export default {
 
   &:hover {
     background-color: $color-primary-dark;
+
   }
 
   &-current {
