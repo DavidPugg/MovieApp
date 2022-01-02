@@ -18,7 +18,7 @@
           :key="item.name"
           @click.native="setName(item.name)"
           class="sort-dropdown__item"
-          :class="{hidden: mainName == item.name}"
+          :class="{ hidden: mainName == item.name }"
           :to="{ name: $route.name, query: { q: item.value } }"
           >{{ item.name }}</NuxtLink
         >
@@ -29,26 +29,23 @@
 
 <script>
 export default {
-  props: ['items'],
+  props: ["items"],
   data() {
     return {
       dropdown: false,
-      name: '',
     };
   },
   computed: {
     mainName() {
-      return this.name == '' ? this.items[0].name : this.name
-    }
+      return !this.$route.query.q
+        ? this.items[0].name
+        : this.items.find((e) => e.value == this.$route.query.q).name;
+    },
   },
   methods: {
     showDropdown() {
       this.dropdown = !this.dropdown;
     },
-    setName(name) {
-      this.dropdown = false;
-      this.name = name;
-    }
   },
 };
 </script>

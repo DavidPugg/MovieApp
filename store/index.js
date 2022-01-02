@@ -11,7 +11,6 @@ const createStore = () => {
     actions: {
       async nuxtServerInit({ dispatch }, { redirect }) {
         await dispatch("setGenres");
-        redirect({ name: "movies" });
       },
       async setGenres({ state }) {
         const movieGenres = await this.$axios.$get(
