@@ -16,7 +16,9 @@
 
 <script>
 export default {
-  props: ["actor"],
+  props: {
+    actor: Object,
+  },
 };
 </script>
 
