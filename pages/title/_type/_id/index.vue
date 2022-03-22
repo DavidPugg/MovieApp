@@ -76,8 +76,7 @@
 </template>
 
 <script>
-import { computed, ref } from "@vue/composition-api";
-import { useFetch, useRoute } from "@nuxtjs/composition-api";
+import { useFetch, useRoute, computed, ref } from "@nuxtjs/composition-api";
 export default {
   layout: "noNavbar",
 
