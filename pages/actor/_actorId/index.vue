@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!fetchState.pending">
     <div class="content">
       <div class="head">
         <h2 class="heading-1 head__title">
@@ -42,11 +42,11 @@
           </p>
         </div>
       </div>
-      <div class="movies" v-if="movies.length > 0">
+      <div class="movies" v-if="movies.cast.length > 0">
         <h2 class="heading-2 movies__title">Movies</h2>
         <div class="movies-list">
           <ActorMovieItem
-            v-for="movie in movies.slice(0, 5)"
+            v-for="movie in movies.cast.slice(0, 5)"
             :key="movie.id"
             :movie="movie"
           />
@@ -55,11 +55,11 @@
           :goTo="{ path: `${$route.path}/movies`, query: { t: 'movies' } }"
         />
       </div>
-      <div class="tv" v-if="tv.length > 0">
+      <div class="tv" v-if="tv.cast.length > 0">
         <h2 class="heading-2 tv__title">Tv shows</h2>
         <div class="tv-list">
           <ActorMovieItem
-            v-for="show in tv.slice(0, 5)"
+            v-for="show in tv.cast.slice(0, 5)"
             :key="show.id"
             :movie="show"
           />
@@ -73,21 +73,32 @@
 </template>
 
 <script>
+import { useContext, useFetch, ref } from "@nuxtjs/composition-api";
 export default {
   layout: "noNavbar",
 
-  async asyncData({ $axios, params }) {
-    const actor = await $axios.$get(
-      `https://api.themoviedb.org/3/person/${params.actorId}?api_key=${process.env.apiKey}&language=en-US`
-    );
-    const movies = await $axios.$get(
-      `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
-    );
-    const tv = await $axios.$get(
-      `https://api.themoviedb.org/3/person/${params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
-    );
-    console.log(actor);
-    return { actor, movies: movies.cast, tv: tv.cast };
+  setup() {
+    const { $axios } = useContext();
+    const actor = ref({});
+    const movies = ref({});
+    const tv = ref({});
+
+    const { fetch, fetchState } = useFetch(async ({ $route }) => {
+      actor.value = await $axios.$get(
+        `https://api.themoviedb.org/3/person/${$route.params.actorId}?api_key=${process.env.apiKey}&language=en-US`
+      );
+
+      movies.value = await $axios.$get(
+        `https://api.themoviedb.org/3/person/${$route.params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
+      );
+
+      tv.value = await $axios.$get(
+        `https://api.themoviedb.org/3/person/${$route.params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
+      );
+    });
+
+    fetch();
+    return { actor, movies, tv, fetchState };
   },
 };
 </script>
