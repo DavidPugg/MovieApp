@@ -6,23 +6,25 @@
           :to="{ name: 'tvshows', query: { q: 'popular' } }"
           class="select"
           :class="{ selected: $route.name === 'tvshows' }"
-          >Tv Shows</NuxtLink
         >
+          Tv Shows
+        </NuxtLink>
         <NuxtLink
           :to="{ name: 'movies', query: { q: 'popular' } }"
           class="select"
           :class="{ selected: $route.name === 'movies' }"
-          >Movies</NuxtLink
         >
+          Movies
+        </NuxtLink>
         <form class="nav__form" @submit.prevent="search">
           <input
+            v-model="userInput"
             class="nav__input"
             type="text"
             placeholder="Search"
-            v-model="userInput"
-          />
+          >
           <svg class="nav__icon">
-            <use xlink:href="~/assets/svgs.svg#icon-magnifying-glass"></use>
+            <use xlink:href="~/assets/svgs.svg#icon-magnifying-glass" />
           </svg>
         </form>
       </div>
@@ -31,23 +33,23 @@
 </template>
 
 <script>
-import { ref, useRoute, useRouter } from "@nuxtjs/composition-api";
+import { ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 export default {
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const userInput = ref("");
+  setup () {
+    const router = useRouter()
+    const route = useRoute()
+    const userInput = ref('')
 
     const search = () => {
       router.push({
         name: route.value.name,
-        query: { s: userInput.value },
-      });
-      userInput.value = "";
-    };
-    return {userInput, search};
-  },
-};
+        query: { s: userInput.value }
+      })
+      userInput.value = ''
+    }
+    return { userInput, search }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

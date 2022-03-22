@@ -3,48 +3,49 @@
     <p class="sort-current">
       {{ mainName }}
       <svg class="sort-current-arrow" :class="{ rotateArrow: dropdown }">
-        <use xlink:href="~/assets/svgs.svg#icon-chevron-left"></use>
+        <use xlink:href="~/assets/svgs.svg#icon-chevron-left" />
       </svg>
     </p>
     <transition name="dropdown">
       <div
-        class="sort-dropdown"
         v-if="dropdown"
-        @click="showDropdown"
         v-click-outside="showDropdown"
+        class="sort-dropdown"
+        @click="showDropdown"
       >
         <NuxtLink
           v-for="item in items"
           :key="item.name"
-          @click.native="showDropdown"
           class="sort-dropdown__item"
           :class="{ hidden: mainName == item.name }"
           :to="{ name: route.name, query: { q: item.value } }"
-          >{{ item.name }}</NuxtLink
+          @click.native="showDropdown"
         >
+          {{ item.name }}
+        </NuxtLink>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import { computed, ref, useRoute } from "@nuxtjs/composition-api";
+import { computed, ref, useRoute } from '@nuxtjs/composition-api'
 export default {
-  props: ["items"],
-  setup({ items }) {
-    const route = useRoute();
-    const dropdown = ref(false);
+  props: ['items'],
+  setup ({ items }) {
+    const route = useRoute()
+    const dropdown = ref(false)
     const mainName = computed(() => {
       return !route.value.query.q
         ? items[0].name
-        : items.find((e) => e.value == route.value.query.q).name;
-    });
+        : items.find(e => e.value == route.value.query.q).name
+    })
     const showDropdown = () => {
-      dropdown.value = !dropdown.value;
-    };
-    return { dropdown, mainName, showDropdown, route };
-  },
-};
+      dropdown.value = !dropdown.value
+    }
+    return { dropdown, mainName, showDropdown, route }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

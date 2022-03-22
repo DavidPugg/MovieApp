@@ -10,26 +10,26 @@
 <script setup>
 const movieLinks = [
   {
-    name: "Popular",
-    value: "popular",
+    name: 'Popular',
+    value: 'popular'
   },
   {
-    name: "Latest",
-    value: "latest",
+    name: 'Latest',
+    value: 'latest'
   },
   {
-    name: "Top rated",
-    value: "top_rated",
+    name: 'Top rated',
+    value: 'top_rated'
   },
   {
-    name: "Now playing",
-    value: "now_playing",
+    name: 'Now playing',
+    value: 'now_playing'
   },
   {
-    name: "Upcoming",
-    value: "upcoming",
-  },
-];
+    name: 'Upcoming',
+    value: 'upcoming'
+  }
+]
 </script>
 
 <style lang="scss" scoped>

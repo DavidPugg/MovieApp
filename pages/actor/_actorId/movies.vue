@@ -1,7 +1,9 @@
 <template>
-  <div class="container" v-if="!fetchState.pending">
+  <div v-if="!fetchState.pending" class="container">
     <div class="content">
-      <h1 class="title heading-1">{{ name }}</h1>
+      <h1 class="title heading-1">
+        {{ name }}
+      </h1>
       <div class="movies">
         <ActorMovieItem
           v-for="item in items.cast"
@@ -21,41 +23,41 @@ import {
   useContext,
   useFetch,
   useRoute,
-  useRouter,
-} from "@nuxtjs/composition-api";
+  useRouter
+} from '@nuxtjs/composition-api'
 export default {
-  layout: "noNavbar",
+  layout: 'noNavbar',
 
-  setup() {
-    const { $axios } = useContext();
-    const router = useRouter();
-    const route = useRoute();
-    const { query, params } = route.value;
-    const items = ref([]);
+  setup () {
+    const { $axios } = useContext()
+    const router = useRouter()
+    const route = useRoute()
+    const { query, params } = route.value
+    const items = ref([])
 
     const name = computed(() => {
-      return query.t === "tv" ? "Tv shows" : "Movies";
-    });
+      return query.t === 'tv' ? 'Tv shows' : 'Movies'
+    })
 
     const openVideo = (id) => {
-      router.push(`${route.value.path}/${id}`);
-    };
+      router.push(`${route.value.path}/${id}`)
+    }
 
     const { fetch, fetchState } = useFetch(async () => {
-      if (query.t == "movies") {
+      if (query.t == 'movies') {
         items.value = await $axios.$get(
           `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
-        );
+        )
       } else {
         items.value = await $axios.$get(
           `https://api.themoviedb.org/3/person/${params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
-        );
+        )
       }
-    });
-    fetch();
-    return { items, name, openVideo, fetchState };
-  },
-};
+    })
+    fetch()
+    return { items, name, openVideo, fetchState }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

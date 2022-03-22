@@ -9,10 +9,9 @@
       allow="autoplay"
       allowfullscreen
       frameborder="0"
-    ></iframe>
+    />
   </NuxtLink>
 </template>
-
 
 <style scoped lang="scss">
 .modal {

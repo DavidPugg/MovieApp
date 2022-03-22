@@ -7,8 +7,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage - 1 },
       }"
-      >&#8592;</NuxtLink
     >
+      &#8592;
+    </NuxtLink>
 
     <NuxtLink
       v-if="currentPage - 3 >= 1"
@@ -17,8 +18,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage - 3 },
       }"
-      >{{ currentPage - 3 }}</NuxtLink
     >
+      {{ currentPage - 3 }}
+    </NuxtLink>
 
     <NuxtLink
       v-if="currentPage - 2 >= 1"
@@ -27,8 +29,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage - 2 },
       }"
-      >{{ currentPage - 2 }}</NuxtLink
     >
+      {{ currentPage - 2 }}
+    </NuxtLink>
 
     <NuxtLink
       v-if="currentPage - 1 >= 1"
@@ -37,10 +40,13 @@
         path: route.path,
         query: { ...route.query, page: currentPage - 1 },
       }"
-      >{{ currentPage - 1 }}</NuxtLink
     >
+      {{ currentPage - 1 }}
+    </NuxtLink>
 
-    <div class="page-selector__btn selected">{{ currentPage }}</div>
+    <div class="page-selector__btn selected">
+      {{ currentPage }}
+    </div>
 
     <NuxtLink
       v-if="currentPage + 1 <= pages"
@@ -49,8 +55,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage + 1 },
       }"
-      >{{ currentPage + 1 }}</NuxtLink
     >
+      {{ currentPage + 1 }}
+    </NuxtLink>
 
     <NuxtLink
       v-if="currentPage + 2 <= pages"
@@ -59,8 +66,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage + 2 },
       }"
-      >{{ currentPage + 2 }}</NuxtLink
     >
+      {{ currentPage + 2 }}
+    </NuxtLink>
 
     <NuxtLink
       v-if="currentPage + 3 <= pages"
@@ -69,8 +77,9 @@
         path: route.path,
         query: { ...route.query, page: currentPage + 3 },
       }"
-      >{{ currentPage + 3 }}</NuxtLink
     >
+      {{ currentPage + 3 }}
+    </NuxtLink>
 
     <NuxtLink
       :event="currentPage < pages ? 'click' : ''"
@@ -80,23 +89,23 @@
         query: { ...route.query, page: currentPage + 1 },
       }"
     >
-      &#8594;</NuxtLink
-    >
+      &#8594;
+    </NuxtLink>
   </div>
 </template>
 
 <script>
-import { useRoute, computed } from "@nuxtjs/composition-api";
+import { useRoute, computed } from '@nuxtjs/composition-api'
 export default {
-  props: ["pages"],
-  setup() {
-    const route = useRoute();
+  props: ['pages'],
+  setup () {
+    const route = useRoute()
     const currentPage = computed(() => {
-      return !route.value.query.page ? 1 : Number(route.value.query.page);
-    });
-    return { currentPage, route };
-  },
-};
+      return !route.value.query.page ? 1 : Number(route.value.query.page)
+    })
+    return { currentPage, route }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

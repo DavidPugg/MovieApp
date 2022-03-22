@@ -4,20 +4,24 @@
       class="actor__img"
       :src="`https://image.tmdb.org/t/p/w200${actor.profile_path}`"
       alt="Actor img"
-    />
+    >
     <div class="actor__names">
-      <h4 class="actor__name">{{ actor.name }}</h4>
-      <h5 class="actor__character-name">{{ actor.character }}</h5>
+      <h4 class="actor__name">
+        {{ actor.name }}
+      </h4>
+      <h5 class="actor__character-name">
+        {{ actor.character }}
+      </h5>
     </div>
   </NuxtLink>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: {
-    actor: Object,
-  },
-};
+    actor: Object
+  }
+}
 </script>
 
 <style scoped lang="scss">

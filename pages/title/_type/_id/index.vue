@@ -11,22 +11,23 @@
         <h2 class="head__title heading-1">
           <span class="head__title-main">{{ title }}</span>
           <span
-            class="head__title-genre"
             v-for="genre in movie.genres"
             :key="genre.id"
-            >{{ genre.name }}</span
-          >
+            class="head__title-genre"
+          >{{ genre.name }}</span>
         </h2>
         <div class="head__rating-box">
           <p><b>Rating</b></p>
-          <p class="head__rating">{{ movie.vote_average }}</p>
+          <p class="head__rating">
+            {{ movie.vote_average }}
+          </p>
         </div>
       </div>
       <div class="details">
-        <p class="details__overview" v-if="movie.overview">
+        <p v-if="movie.overview" class="details__overview">
           {{ movie.overview }}
         </p>
-        <p class="details__overview" v-else>
+        <p v-else class="details__overview">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
           at fugiat blanditiis dignissimos inventore doloremque harum hic magnam
           quod tempore, laboriosam, similique repellat? Illo voluptatem animi
@@ -40,28 +41,34 @@
           <p class="details__revenue">
             <b>{{ statTwoText }}</b> {{ statTwo }}
           </p>
-          <p class="details__runtime"><b>Runtime: </b> {{ statThree }}min</p>
+          <p class="details__runtime">
+            <b>Runtime: </b> {{ statThree }}min
+          </p>
         </div>
       </div>
-      <div class="gallery" v-if="trailer">
+      <div v-if="trailer" class="gallery">
         <iframe
           class="gallery__video"
           :src="`https://www.youtube.com/embed/${trailer.key}`"
+        />
+        <NuxtLink
+          class="gallery__button"
+          :to="`${$route.path}/gallery`"
         >
-        </iframe>
-        <NuxtLink class="gallery__button" :to="`${$route.path}/gallery`"
-          >Videos</NuxtLink
-        >
+          Videos
+        </NuxtLink>
       </div>
-      <div class="poster" v-else>
+      <div v-else class="poster">
         <img
           class="img"
           :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`"
           alt="Poster"
-        />
+        >
       </div>
       <div class="cast">
-        <h2 class="heading-2 cast__title">Cast</h2>
+        <h2 class="heading-2 cast__title">
+          Cast
+        </h2>
         <div class="actors">
           <ActorItem
             v-for="actor in cast.slice(0, 4)"
@@ -69,64 +76,63 @@
             :actor="actor"
           />
         </div>
-        <ShowMoreButton :goTo="{ path: `${$route.path}/cast` }" />
+        <ShowMoreButton :go-to="{ path: `${$route.path}/cast` }" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useFetch, useRoute, computed, ref } from "@nuxtjs/composition-api";
+import { useFetch, useRoute, computed, ref } from '@nuxtjs/composition-api'
 export default {
-  layout: "noNavbar",
+  layout: 'noNavbar',
 
-  setup() {
-    const route = useRoute();
-    const { params } = route.value;
+  setup () {
+    const movie = ref()
+    const trailer = ref()
+    const cast = ref()
+    const route = useRoute()
+    const { params } = route.value
 
     const title = computed(() => {
-      return params.type == "tv" ? movie.name : movie.original_title;
-    });
+      return params.type == 'tv' ? movie.value.name : movie.value.original_title
+    })
 
     const statOne = computed(() => {
-      return params.type == "tv" ? movie.number_of_seasons : movie.budget;
-    });
+      return params.type == 'tv' ? movie.value.number_of_seasons : movie.value.budget
+    })
 
     const statTwo = computed(() => {
-      return params.type == "tv" ? movie.number_of_episodes : movie.revenue;
-    });
+      return params.type == 'tv' ? movie.value.number_of_episodes : movie.value.revenue
+    })
 
     const statThree = computed(() => {
-      return params.type == "tv" ? movie.episode_run_time[0] : movie.runtime;
-    });
+      return params.type == 'tv' ? movie.value.episode_run_time[0] : movie.value.runtime
+    })
 
     const statOneText = computed(() => {
-      return params.type == "tv" ? "Seasons: " : "Budget: $";
-    });
+      return params.type == 'tv' ? 'Seasons: ' : 'Budget: $'
+    })
 
     const statTwoText = computed(() => {
-      return params.type == "tv" ? "Episodes: " : "Revenue: $";
-    });
-
-    const movie = ref();
-    const trailer = ref();
-    const cast = ref();
+      return params.type == 'tv' ? 'Episodes: ' : 'Revenue: $'
+    })
 
     const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
       movie.value = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}?api_key=${process.env.apiKey}&language=en-US`
-      );
+      )
       const videos = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
-      );
+      )
       const credits = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
-      );
-      cast.value = credits.cast;
-      trailer.value = videos.results.find((t) => t.type == "Trailer");
-    });
+      )
+      cast.value = credits.cast
+      trailer.value = videos.results.find(t => t.type == 'Trailer')
+    })
 
-    fetch();
+    fetch()
 
     return {
       fetchState,
@@ -138,10 +144,10 @@ export default {
       statTwo,
       statThree,
       statOneText,
-      statTwoText,
-    };
-  },
-};
+      statTwoText
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

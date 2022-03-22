@@ -4,25 +4,27 @@
       class="movie__img"
       :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`"
       alt="Movie img"
-    />
-    <h3 class="movie__title">{{ name }}</h3>
+    >
+    <h3 class="movie__title">
+      {{ name }}
+    </h3>
   </NuxtLink>
 </template>
 
 <script>
-import { computed } from "@nuxtjs/composition-api";
+import { computed } from '@nuxtjs/composition-api'
 export default {
   props: ['movie'],
-  setup({movie}) {
+  setup ({ movie }) {
     const name = computed(() => {
-      return movie.title ? movie.title : movie.name;
-    });
+      return movie.title ? movie.title : movie.name
+    })
     const isMovie = computed(() => {
-      return movie.title ? "movie" : "tv";
-    });
-    return { name, isMovie };
-  },
-};
+      return movie.title ? 'movie' : 'tv'
+    })
+    return { name, isMovie }
+  }
+}
 </script>
 
 <style scoped lang="scss">

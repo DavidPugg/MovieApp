@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="!fetchState.pending">
+  <div v-if="!fetchState.pending" class="container">
     <div class="content">
       <div class="head">
         <h2 class="heading-1 head__title">
@@ -7,7 +7,9 @@
         </h2>
         <div class="head__popularity-box">
           <p><b>Popularity</b></p>
-          <p class="head__popularity">#{{ Math.round(actor.popularity) }}</p>
+          <p class="head__popularity">
+            #{{ Math.round(actor.popularity) }}
+          </p>
         </div>
       </div>
       <div class="gallery">
@@ -15,15 +17,15 @@
           class="gallery__img"
           :src="`https://image.tmdb.org/t/p/w400${actor.profile_path}`"
           alt="Actor profile"
-        />
+        >
       </div>
       <div class="details">
         <p
-          class="details__biography"
           v-if="actor.biography"
+          class="details__biography"
           v-html="actor.biography"
-        ></p>
-        <p class="details__biography" v-else>
+        />
+        <p v-else class="details__biography">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem repellat
           numquam autem ullam repudiandae velit, nobis animi quaerat pariatur
           fugiat dolor laborum in eum. Esse labore asperiores harum neque
@@ -35,15 +37,16 @@
         <div class="details__birth">
           <p><b>Birthday: </b>{{ actor.birthday }}</p>
           <p>
-            <b>Death: </b
-            ><span :style="{ color: actor.deathday ? 'red' : 'lime' }">{{
+            <b>Death: </b><span :style="{ color: actor.deathday ? 'red' : 'lime' }">{{
               actor.deathday ? actor.deathday : "Alive"
             }}</span>
           </p>
         </div>
       </div>
-      <div class="movies" v-if="movies.cast.length > 0">
-        <h2 class="heading-2 movies__title">Movies</h2>
+      <div v-if="movies.cast.length > 0" class="movies">
+        <h2 class="heading-2 movies__title">
+          Movies
+        </h2>
         <div class="movies-list">
           <ActorMovieItem
             v-for="movie in movies.cast.slice(0, 5)"
@@ -52,11 +55,13 @@
           />
         </div>
         <ShowMoreButton
-          :goTo="{ path: `${$route.path}/movies`, query: { t: 'movies' } }"
+          :go-to="{ path: `${$route.path}/movies`, query: { t: 'movies' } }"
         />
       </div>
-      <div class="tv" v-if="tv.cast.length > 0">
-        <h2 class="heading-2 tv__title">Tv shows</h2>
+      <div v-if="tv.cast.length > 0" class="tv">
+        <h2 class="heading-2 tv__title">
+          Tv shows
+        </h2>
         <div class="tv-list">
           <ActorMovieItem
             v-for="show in tv.cast.slice(0, 5)"
@@ -65,7 +70,7 @@
           />
         </div>
         <ShowMoreButton
-          :goTo="{ path: `${$route.path}/movies`, query: { t: 'tv' } }"
+          :go-to="{ path: `${$route.path}/movies`, query: { t: 'tv' } }"
         />
       </div>
     </div>
@@ -73,34 +78,34 @@
 </template>
 
 <script>
-import { useContext, useFetch, ref } from "@nuxtjs/composition-api";
+import { useContext, useFetch, ref } from '@nuxtjs/composition-api'
 export default {
-  layout: "noNavbar",
+  layout: 'noNavbar',
 
-  setup() {
-    const { $axios } = useContext();
-    const actor = ref({});
-    const movies = ref({});
-    const tv = ref({});
+  setup () {
+    const { $axios } = useContext()
+    const actor = ref({})
+    const movies = ref({})
+    const tv = ref({})
 
     const { fetch, fetchState } = useFetch(async ({ $route }) => {
       actor.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}?api_key=${process.env.apiKey}&language=en-US`
-      );
+      )
 
       movies.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
-      );
+      )
 
       tv.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
-      );
-    });
+      )
+    })
 
-    fetch();
-    return { actor, movies, tv, fetchState };
-  },
-};
+    fetch()
+    return { actor, movies, tv, fetchState }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

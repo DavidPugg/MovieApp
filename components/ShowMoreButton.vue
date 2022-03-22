@@ -1,17 +1,21 @@
 <template>
-  <NuxtLink class="button" :to="goTo"
-    ><div class="button-box">
+  <NuxtLink
+    class="button"
+    :to="goTo"
+  >
+    <div class="button-box">
       <p>Show more</p>
       <svg class="button-icon">
-        <use xlink:href="~/assets/svgs.svg#icon-chevron-small-right"></use>
-      </svg></div
-  ></NuxtLink>
+        <use xlink:href="~/assets/svgs.svg#icon-chevron-small-right" />
+      </svg>
+    </div>
+  </NuxtLink>
 </template>
 
 <script>
 export default {
-    props: ['goTo']
-};
+  props: ['goTo']
+}
 </script>
 
 <style scoped lang="scss">

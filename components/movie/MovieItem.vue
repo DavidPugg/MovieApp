@@ -1,40 +1,44 @@
 <template>
   <NuxtLink class="link" :to="goTo">
     <div class="item">
-      <img class="img" :src="fullPoster" alt="" />
-      <p class="rating">{{ rating }}</p>
-      <h4 class="title">{{ shortTitle }}</h4>
+      <img class="img" :src="fullPoster" alt="">
+      <p class="rating">
+        {{ rating }}
+      </p>
+      <h4 class="title">
+        {{ shortTitle }}
+      </h4>
     </div>
   </NuxtLink>
 </template>
 
 <script>
-import { computed, ref, useRoute } from "@nuxtjs/composition-api";
+import { computed, ref, useRoute } from '@nuxtjs/composition-api'
 export default {
-  props: ["poster", "title", "genre", "rating", "released", "id"],
+  props: ['poster', 'title', 'genre', 'rating', 'released', 'id'],
 
-  setup({ poster, title, id }) {
-    const route = useRoute();
-    const params = route.value;
+  setup ({ poster, title, id }) {
+    const route = useRoute()
+    const params = route.value
 
-    const fullPoster = ref(`https://image.tmdb.org/t/p/w200${poster}`);
+    const fullPoster = ref(`https://image.tmdb.org/t/p/w200${poster}`)
 
     const goTo = computed(() => {
-      if (params.name === "tvshows") {
-        return `title/tv/${id}`;
+      if (params.name === 'tvshows') {
+        return `title/tv/${id}`
       } else {
-        return `title/movie/${id}`;
+        return `title/movie/${id}`
       }
-    });
+    })
 
     const shortTitle = computed(() => {
-      if (title.length <= 30) return title;
-      return title.substring(0, 30) + "...";
-    });
+      if (title.length <= 30) { return title }
+      return title.substring(0, 30) + '...'
+    })
 
-    return { fullPoster, goTo, shortTitle };
-  },
-};
+    return { fullPoster, goTo, shortTitle }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
