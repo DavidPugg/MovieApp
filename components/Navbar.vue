@@ -31,21 +31,21 @@
 </template>
 
 <script>
+import { ref, useRoute, useRouter } from "@nuxtjs/composition-api";
 export default {
-  data() {
-    return {
-      userInput: "",
-    };
-  },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const userInput = ref("");
 
-  methods: {
-    search() {
-      this.$router.push({
-        name: this.$route.name,
-        query: { s: this.userInput },
+    const search = () => {
+      router.push({
+        name: route.value.name,
+        query: { s: userInput.value },
       });
-      this.userInput = "";
-    },
+      userInput.value = "";
+    };
+    return {userInput, search};
   },
 };
 </script>
@@ -147,5 +147,4 @@ export default {
   background-color: $color-secondary-dark;
   font-weight: 600;
 }
-
 </style>

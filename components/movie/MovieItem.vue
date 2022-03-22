@@ -13,23 +13,11 @@ import { computed, ref, useRoute } from "@nuxtjs/composition-api";
 export default {
   props: ["poster", "title", "genre", "rating", "released", "id"],
 
-  setup({ poster, title, genre, id }) {
+  setup({ poster, title, id }) {
     const route = useRoute();
     const params = route.value;
 
     const fullPoster = ref(`https://image.tmdb.org/t/p/w200${poster}`);
-
-    const genres = computed(() => {
-      if (params.name === "tvshows") {
-        return $store.getters["getTvGenres"].filter((g) =>
-          genre.includes(g.id)
-        );
-      } else {
-        return $store.getters["getMovieGenres"].filter((g) =>
-          genre.includes(g.id)
-        );
-      }
-    });
 
     const goTo = computed(() => {
       if (params.name === "tvshows") {
@@ -44,7 +32,7 @@ export default {
       return title.substring(0, 30) + "...";
     });
 
-    return { fullPoster, genres, goTo, shortTitle };
+    return { fullPoster, goTo, shortTitle };
   },
 };
 </script>

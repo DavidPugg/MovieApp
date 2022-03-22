@@ -4,8 +4,8 @@
       :event="currentPage > 1 ? 'click' : ''"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage - 1 },
+        path: route.path,
+        query: { ...route.query, page: currentPage - 1 },
       }"
       >&#8592;</NuxtLink
     >
@@ -14,8 +14,8 @@
       v-if="currentPage - 3 >= 1"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage - 3 },
+        path: route.path,
+        query: { ...route.query, page: currentPage - 3 },
       }"
       >{{ currentPage - 3 }}</NuxtLink
     >
@@ -24,8 +24,8 @@
       v-if="currentPage - 2 >= 1"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage - 2 },
+        path: route.path,
+        query: { ...route.query, page: currentPage - 2 },
       }"
       >{{ currentPage - 2 }}</NuxtLink
     >
@@ -34,8 +34,8 @@
       v-if="currentPage - 1 >= 1"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage - 1 },
+        path: route.path,
+        query: { ...route.query, page: currentPage - 1 },
       }"
       >{{ currentPage - 1 }}</NuxtLink
     >
@@ -46,8 +46,8 @@
       v-if="currentPage + 1 <= pages"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage + 1 },
+        path: route.path,
+        query: { ...route.query, page: currentPage + 1 },
       }"
       >{{ currentPage + 1 }}</NuxtLink
     >
@@ -56,8 +56,8 @@
       v-if="currentPage + 2 <= pages"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage + 2 },
+        path: route.path,
+        query: { ...route.query, page: currentPage + 2 },
       }"
       >{{ currentPage + 2 }}</NuxtLink
     >
@@ -66,8 +66,8 @@
       v-if="currentPage + 3 <= pages"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage + 3 },
+        path: route.path,
+        query: { ...route.query, page: currentPage + 3 },
       }"
       >{{ currentPage + 3 }}</NuxtLink
     >
@@ -76,8 +76,8 @@
       :event="currentPage < pages ? 'click' : ''"
       class="page-selector__btn"
       :to="{
-        path: this.$route.path,
-        query: { ...this.$route.query, page: this.currentPage + 1 },
+        path: route.path,
+        query: { ...route.query, page: currentPage + 1 },
       }"
     >
       &#8594;</NuxtLink
@@ -86,16 +86,15 @@
 </template>
 
 <script>
+import { useRoute, computed } from "@nuxtjs/composition-api";
 export default {
   props: ["pages"],
-  computed: {
-    currentPage() {
-      if (!this.$route.query.page) return 1;
-      return Number(this.$route.query.page);
-    },
-  },
-  watch: {
-    "$route.query.page": "$fetch",
+  setup() {
+    const route = useRoute();
+    const currentPage = computed(() => {
+      return !route.value.query.page ? 1 : Number(route.value.query.page);
+    });
+    return { currentPage, route };
   },
 };
 </script>
