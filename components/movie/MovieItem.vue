@@ -4,49 +4,35 @@
       <img class="img" :src="fullPoster" alt="" />
       <p class="rating">{{ rating }}</p>
       <h4 class="title">{{ shortTitle }}</h4>
-      <!-- <div class="details">
-        <h4 class="title">{{ shortTitle }}</h4>
-        <p class="released">
-          {{ released }}
-        </p>
-      </div> -->
     </div>
   </NuxtLink>
 </template>
 
 <script>
+import { computed, ref, useRoute } from "@nuxtjs/composition-api";
 export default {
   props: ["poster", "title", "genre", "rating", "released", "id"],
 
-  data() {
-    return {
-      fullPoster: `https://image.tmdb.org/t/p/w200${this.poster}`,
-    };
-  },
+  setup({ poster, title, id }) {
+    const route = useRoute();
+    const params = route.value;
 
-  computed: {
-    genres() {
-      if (this.$route.name === "tvshows") {
-        return this.$store.getters["getTvGenres"].filter((g) =>
-          this.genre.includes(g.id)
-        );
+    const fullPoster = ref(`https://image.tmdb.org/t/p/w200${poster}`);
+
+    const goTo = computed(() => {
+      if (params.name === "tvshows") {
+        return `title/tv/${id}`;
       } else {
-        return this.$store.getters["getMovieGenres"].filter((g) =>
-          this.genre.includes(g.id)
-        );
+        return `title/movie/${id}`;
       }
-    },
-    goTo() {
-      if (this.$route.name === "tvshows") {
-        return `title/tv/${this.id}`;
-      } else {
-        return `title/movie/${this.id}`;
-      }
-    },
-    shortTitle() {
-      if (this.title.length <= 30) return this.title;
-      return this.title.substring(0, 29) + "...";
-    },
+    });
+
+    const shortTitle = computed(() => {
+      if (title.length <= 30) return title;
+      return title.substring(0, 30) + "...";
+    });
+
+    return { fullPoster, goTo, shortTitle };
   },
 };
 </script>
@@ -71,7 +57,6 @@ export default {
   transition: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
 
   &:hover {
-    // transform: scale(1.05);
     transform: translateY(-0.5rem);
     box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.15);
   }

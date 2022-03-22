@@ -14,9 +14,8 @@
 
 <script>
 export default {
-  props: ["actor"],
-  fetch() {
-    console.log(this.actor);
+  props: {
+    actor: Object,
   },
 };
 </script>
@@ -40,12 +39,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     font-size: 1.6rem;
-
   }
 
   &__name {
     color: $color-primary-dark;
-
   }
 
   &__character-name {
@@ -53,7 +50,6 @@ export default {
     flex-wrap: wrap;
     color: white;
     margin-left: 0.5rem;
-
   }
 
   &:hover {

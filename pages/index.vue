@@ -1,9 +1,13 @@
 <template></template>
 
 <script>
+import { useAsync, useRouter } from "@nuxtjs/composition-api";
 export default {
-  asyncData({ redirect }) {
-    redirect({ name: "movies" });
+  setup() {
+    const router = useRouter();
+    useAsync(() => {
+      router.push({ name: "movies" });
+    });
   },
 };
 </script>

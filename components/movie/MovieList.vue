@@ -1,16 +1,16 @@
 <template>
   <section class="movies">
-    <div v-if="$fetchState.pending" class="lds-ring loader">
+    <div v-if="fetchState.pending" class="lds-ring loader">
       <div></div>
       <div></div>
       <div></div>
       <div></div>
     </div>
-    <p v-if="checkItems && !$fetchState.pending" class="text">
+    <p v-if="checkItems && !fetchState.pending" class="text">
       No movies found!
     </p>
     <MovieItem
-      v-else-if="!$fetchState.pending"
+      v-else-if="!fetchState.pending"
       v-for="item in items"
       :key="item.id"
       :id="item.id"
@@ -21,87 +21,94 @@
       :released="item.release_date"
     />
     <PageSelector
-      v-if="!$fetchState.pending && !checkItems"
+      v-if="!fetchState.pending && !checkItems"
       :pages="totalPages"
     />
   </section>
 </template>
 
 <script>
+import {
+  ref,
+  computed,
+  watch,
+  useRoute,
+  useFetch,
+  useContext,
+} from "@nuxtjs/composition-api";
 export default {
-  watch: {
-    "$route.query": "$fetch",
-  },
+  setup() {
+    const route = useRoute();
+    const { $axios } = useContext();
 
-  data() {
-    return {
-      items: [],
-      totalPages: null,
-    };
-  },
+    const items = ref([]);
+    const totalPages = ref(null);
 
-  computed: {
-    page() {
-      return this.$route.query.page ? this.$route.query.page : 1;
-    },
-    checkItems() {
-      return typeof this.items === "undefined" || this.items.length < 1
-        ? true
-        : false;
-    },
-  },
+    const checkItems = computed(() => {
+      return typeof items === "undefined" || items.length < 1 ? true : false;
+    });
 
-  async fetch() {
-    try {
-      let items;
-      if (this.$route.name === "movies") {
-        if (this.$route.query.q) {
-          items = await this.$axios.$get(
-            `https://api.themoviedb.org/3/movie/${this.$route.query.q}?api_key=${process.env.apiKey}&language=en-US&page=${this.page}`
-          );
-        } else if (this.$route.query.s) {
-          items = await this.$axios.$get(
-            `https://api.themoviedb.org/3/search/movie?api_key=${process.env.apiKey}&language=en-US&page=${this.$route.query.page}&query=${this.$route.query.s}`
-          );
-        } else {
-          items = await this.$axios.$get(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.apiKey}&language=en-US&page=${this.$route.query.page}`
-          );
-        }
-      } else if (this.$route.name === "tvshows") {
-        let i;
-        let results = [];
-        if (this.$route.query.q) {
-          i = await this.$axios.$get(
-            `https://api.themoviedb.org/3/tv/${this.$route.query.q}?api_key=${process.env.apiKey}&language=en-US&page=${this.page}`
-          );
-        } else if (this.$route.query.s) {
-          i = await this.$axios.$get(
-            `https://api.themoviedb.org/3/search/tv?api_key=${process.env.apiKey}&language=en-US&page=${this.$route.query.page}&query=${this.$route.query.s}`
-          );
-        } else {
-          i = await this.$axios.$get(
-            `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.apiKey}&language=en-US&page=${this.$route.query.page}`
-          );
-        }
-        i.results.forEach((item) => {
-          results.push({
-            ...item,
-            title: item.name,
-            release_date: item.first_air_date,
-          });
-        });
-        items = { total_pages: i.total_pages, results };
-      } else {
-        items = await this.$axios.$get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.apiKey}&language=en-US&page=${this.$route.query.page}`
-        );
+    watch(
+      () => route.value,
+      () => {
+        fetch();
       }
-      this.items = items.results;
-      this.totalPages = items.total_pages;
-    } catch (err) {
-      console.log(err);
-    }
+    );
+
+    const { fetch, fetchState } = useFetch(async ({ $route }) => {
+      try {
+        const { query } = $route;
+        let dummyItems;
+        if ($route.name == "movies") {
+          if (query.q) {
+            dummyItems = await $axios.$get(
+              `https://api.themoviedb.org/3/movie/${query.q}?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
+            );
+          } else if (query.s) {
+            dummyItems = await $axios.$get(
+              `https://api.themoviedb.org/3/search/movie?api_key=${process.env.apiKey}&language=en-US&page=${query.page}&query=${query.s}`
+            );
+          } else {
+            dummyItems = await $axios.$get(
+              `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
+            );
+          }
+        } else if ($route.name == "tvshows") {
+          let i;
+          let results = [];
+          if (query.q) {
+            i = await $axios.$get(
+              `https://api.themoviedb.org/3/tv/${query.q}?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
+            );
+          } else if (query.s) {
+            i = await $axios.$get(
+              `https://api.themoviedb.org/3/search/tv?api_key=${process.env.apiKey}&language=en-US&page=${query.page}&query=${query.s}`
+            );
+          } else {
+            i = await $axios.$get(
+              `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
+            );
+          }
+          i.results.forEach((item) => {
+            results.push({
+              ...item,
+              title: item.name,
+              release_date: item.first_air_date,
+            });
+          });
+          dummyItems = { total_pages: i.total_pages, results };
+        } else {
+          dummyItems = await $axios.$get(
+            `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
+          );
+        }
+        items.value = dummyItems.results;
+        totalPages.value = dummyItems.total_pages;
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    return { fetchState, checkItems, items, totalPages };
   },
 };
 </script>
@@ -132,7 +139,8 @@ export default {
   align-self: flex-start;
   justify-self: center;
 }
-.loader, .text {
+.loader,
+.text {
   margin: 10rem auto;
 }
 </style>

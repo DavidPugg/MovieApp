@@ -19,7 +19,7 @@
           @click.native="showDropdown"
           class="sort-dropdown__item"
           :class="{ hidden: mainName == item.name }"
-          :to="{ name: $route.name, query: { q: item.value } }"
+          :to="{ name: route.name, query: { q: item.value } }"
           >{{ item.name }}</NuxtLink
         >
       </div>
@@ -28,24 +28,21 @@
 </template>
 
 <script>
+import { computed, ref, useRoute } from "@nuxtjs/composition-api";
 export default {
   props: ["items"],
-  data() {
-    return {
-      dropdown: false,
+  setup({ items }) {
+    const route = useRoute();
+    const dropdown = ref(false);
+    const mainName = computed(() => {
+      return !route.value.query.q
+        ? items[0].name
+        : items.find((e) => e.value == route.value.query.q).name;
+    });
+    const showDropdown = () => {
+      dropdown.value = !dropdown.value;
     };
-  },
-  computed: {
-    mainName() {
-      return !this.$route.query.q
-        ? this.items[0].name
-        : this.items.find((e) => e.value == this.$route.query.q).name;
-    },
-  },
-  methods: {
-    showDropdown() {
-      this.dropdown = !this.dropdown;
-    },
+    return { dropdown, mainName, showDropdown, route };
   },
 };
 </script>
@@ -80,7 +77,6 @@ export default {
 
   &:hover {
     background-color: $color-primary-dark;
-
   }
 
   &-current {

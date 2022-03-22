@@ -10,17 +10,18 @@
 </template>
 
 <script>
+import { computed } from "@nuxtjs/composition-api";
 export default {
-  props: ["movie"],
-
-  computed: {
-    name() {
-      return this.movie.title ? this.movie.title : this.movie.name
-    },
-    isMovie() {
-      return this.movie.title ? 'movie' : 'tv'
-    }
-  }
+  props: ['movie'],
+  setup({movie}) {
+    const name = computed(() => {
+      return movie.title ? movie.title : movie.name;
+    });
+    const isMovie = computed(() => {
+      return movie.title ? "movie" : "tv";
+    });
+    return { name, isMovie };
+  },
 };
 </script>
 
@@ -44,8 +45,6 @@ export default {
     font-size: 1.6rem;
     color: white;
   }
-
-  
 
   &:hover {
     transform: translateY(-3px) scale(1.03);
