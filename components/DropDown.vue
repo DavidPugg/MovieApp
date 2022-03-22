@@ -52,7 +52,7 @@ export default defineComponent({
   setup ({ items }) {
     const route = useRoute()
     const dropdown = ref<Boolean>(false)
-    const mainName = computed(() => {
+    const mainName = computed((): String => {
       return !route.value.query.q
         ? items[0].name
         : (items.find((e: Item) => e.value === route.value.query.q) as Item)

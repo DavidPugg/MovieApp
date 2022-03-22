@@ -27,11 +27,11 @@ export default defineComponent({
     const route = useRoute()
     const params = route.value
 
-    const fullPoster = computed(() => {
+    const fullPoster = computed((): String => {
       return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : ''
     })
 
-    const goTo = computed(() => {
+    const goTo = computed((): String => {
       if (params.name === 'tvshows') {
         return `title/tv/${id}`
       } else {
@@ -39,7 +39,7 @@ export default defineComponent({
       }
     })
 
-    const shortTitle = computed(() => {
+    const shortTitle = computed((): String => {
       if (title.length <= 30) { return title }
       return title.substring(0, 30) + '...'
     })

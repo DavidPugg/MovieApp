@@ -17,11 +17,12 @@
 </template>
 
 <script lang="ts">
+import { PropType } from '@vue/composition-api'
 import { Actor } from '~/interfaces/Actor'
 export default {
   props: {
     actor: {
-      type: Object as () => Actor,
+      type: Object as PropType<Actor>,
       required: true
     }
   }

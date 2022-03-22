@@ -105,7 +105,7 @@ export default defineComponent({
   },
   setup () {
     const route = useRoute()
-    const currentPage = computed(() => {
+    const currentPage = computed((): Number => {
       return !route.value.query.page ? 1 : Number(route.value.query.page)
     })
     return { currentPage, route }

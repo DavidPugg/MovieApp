@@ -20,10 +20,7 @@
         >
       </div>
       <div class="details">
-        <p
-          v-if="actor.biography"
-          class="details__biography"
-        >
+        <p v-if="actor.biography" class="details__biography">
           {{ actor.biography }}
         </p>
         <p v-else class="details__biography">
@@ -78,16 +75,23 @@
   </div>
 </template>
 
-<script>
-import { useContext, useFetch, ref } from '@nuxtjs/composition-api'
-export default {
+<script lang="ts">
+import {
+  useContext,
+  useFetch,
+  ref,
+  defineComponent
+} from '@nuxtjs/composition-api'
+import { Actor } from '~/interfaces/Actor'
+import { Movie, Tv } from '~/interfaces/Movie'
+export default defineComponent({
   layout: 'noNavbar',
 
   setup () {
     const { $axios } = useContext()
-    const actor = ref({})
-    const movies = ref({})
-    const tv = ref({})
+    const actor = ref<Actor>({} as Actor)
+    const movies = ref<Movie[]>({} as Movie[])
+    const tv = ref<Tv[]>({} as Tv[])
 
     const { fetch, fetchState } = useFetch(async ({ $route }) => {
       actor.value = await $axios.$get(
@@ -106,7 +110,7 @@ export default {
     fetch()
     return { actor, movies, tv, fetchState }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -26,6 +26,7 @@ import {
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
+import { Movie, Tv } from '~/interfaces/Movie'
 export default defineComponent({
   layout: 'noNavbar',
 
@@ -34,7 +35,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const { query, params } = route.value
-    const items = ref([])
+    const items = ref<Movie[] | Tv[]>([])
 
     const name = computed(() => {
       return query.t === 'tv' ? 'Tv shows' : 'Movies'
