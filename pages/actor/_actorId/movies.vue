@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!fetchState.pending">
     <div class="content">
       <h1 class="title heading-1">{{ name }}</h1>
       <div class="movies">
         <ActorMovieItem
-          v-for="movie in movies"
-          :key="movie.id"
-          :movie="movie"
+          v-for="item in items.cast"
+          :key="item.id"
+          :movie="item"
         />
       </div>
     </div>
@@ -15,33 +15,45 @@
 </template>
 
 <script>
+import {
+  computed,
+  ref,
+  useContext,
+  useFetch,
+  useRoute,
+  useRouter,
+} from "@nuxtjs/composition-api";
 export default {
   layout: "noNavbar",
 
-  computed: {
-    name() {
-      return this.$route.query.t === "tv" ? "Tv shows" : "Movies";
-    },
-  },
+  setup() {
+    const { $axios } = useContext();
+    const router = useRouter();
+    const route = useRoute();
+    const { query, params } = route.value;
+    const items = ref([]);
 
-  async asyncData({ $axios, params, query }) {
-    let movies;
-    if (query.t == "movies") {
-      movies = await $axios.$get(
-        `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
-      );
-    } else {
-      movies = await $axios.$get(
-        `https://api.themoviedb.org/3/person/${params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
-      );
-    }
-    return { movies: movies.cast };
-  },
+    const name = computed(() => {
+      return query.t === "tv" ? "Tv shows" : "Movies";
+    });
 
-  methods: {
-    openVideo(id) {
-      this.$router.push(`${this.$route.path}/${id}`);
-    },
+    const openVideo = (id) => {
+      router.push(`${route.value.path}/${id}`);
+    };
+
+    const { fetch, fetchState } = useFetch(async () => {
+      if (query.t == "movies") {
+        items.value = await $axios.$get(
+          `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
+        );
+      } else {
+        items.value = await $axios.$get(
+          `https://api.themoviedb.org/3/person/${params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
+        );
+      }
+    });
+    fetch();
+    return { items, name, openVideo, fetchState };
   },
 };
 </script>

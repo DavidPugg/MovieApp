@@ -12,9 +12,7 @@
 <script>
 import { computed } from "@nuxtjs/composition-api";
 export default {
-  props: {
-    movie: Object,
-  },
+  props: ['movie'],
   setup({movie}) {
     const name = computed(() => {
       return movie.title ? movie.title : movie.name;
