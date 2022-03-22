@@ -23,8 +23,9 @@
         <p
           v-if="actor.biography"
           class="details__biography"
-          v-html="actor.biography"
-        />
+        >
+          {{ actor.biography }}
+        </p>
         <p v-else class="details__biography">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem repellat
           numquam autem ullam repudiandae velit, nobis animi quaerat pariatur

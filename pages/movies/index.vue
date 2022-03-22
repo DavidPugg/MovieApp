@@ -1,35 +1,42 @@
 <template>
   <main class="container">
     <div class="dropdown">
-      <Dropdown :items="movieLinks" />
+      <DropDown :items="movieLinks" />
     </div>
     <MovieList />
   </main>
 </template>
 
-<script setup>
-const movieLinks = [
-  {
-    name: 'Popular',
-    value: 'popular'
-  },
-  {
-    name: 'Latest',
-    value: 'latest'
-  },
-  {
-    name: 'Top rated',
-    value: 'top_rated'
-  },
-  {
-    name: 'Now playing',
-    value: 'now_playing'
-  },
-  {
-    name: 'Upcoming',
-    value: 'upcoming'
+<script>
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup () {
+    const movieLinks = [
+      {
+        name: 'Popular',
+        value: 'popular'
+      },
+      {
+        name: 'Latest',
+        value: 'latest'
+      },
+      {
+        name: 'Top rated',
+        value: 'top_rated'
+      },
+      {
+        name: 'Now playing',
+        value: 'now_playing'
+      },
+      {
+        name: 'Upcoming',
+        value: 'upcoming'
+      }
+    ]
+    return { movieLinks }
   }
-]
+})
 </script>
 
 <style lang="scss" scoped>

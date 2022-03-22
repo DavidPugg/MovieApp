@@ -16,16 +16,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   computed,
+  defineComponent,
   ref,
   useContext,
   useFetch,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
-export default {
+export default defineComponent({
   layout: 'noNavbar',
 
   setup () {
@@ -39,12 +40,12 @@ export default {
       return query.t === 'tv' ? 'Tv shows' : 'Movies'
     })
 
-    const openVideo = (id) => {
+    const openVideo = (id: Number) => {
       router.push(`${route.value.path}/${id}`)
     }
 
     const { fetch, fetchState } = useFetch(async () => {
-      if (query.t == 'movies') {
+      if (query.t === 'movies') {
         items.value = await $axios.$get(
           `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
         )
@@ -57,7 +58,7 @@ export default {
     fetch()
     return { items, name, openVideo, fetchState }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

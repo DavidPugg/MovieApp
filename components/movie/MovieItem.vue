@@ -12,16 +12,24 @@
   </NuxtLink>
 </template>
 
-<script>
-import { computed, ref, useRoute } from '@nuxtjs/composition-api'
-export default {
-  props: ['poster', 'title', 'genre', 'rating', 'released', 'id'],
+<script lang="ts">
+import { computed, defineComponent, PropType, useRoute } from '@nuxtjs/composition-api'
+export default defineComponent({
+  props: {
+    poster: { type: String as PropType<String | null>, default: null },
+    title: { type: String, required: true },
+    rating: { type: Number, required: true },
+    released: { type: String, required: true },
+    id: { type: Number, required: true }
+  },
 
   setup ({ poster, title, id }) {
     const route = useRoute()
     const params = route.value
 
-    const fullPoster = ref(`https://image.tmdb.org/t/p/w200${poster}`)
+    const fullPoster = computed(() => {
+      return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : ''
+    })
 
     const goTo = computed(() => {
       if (params.name === 'tvshows') {
@@ -38,7 +46,7 @@ export default {
 
     return { fullPoster, goTo, shortTitle }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

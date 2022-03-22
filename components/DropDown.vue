@@ -28,24 +28,42 @@
   </div>
 </template>
 
-<script>
-import { computed, ref, useRoute } from '@nuxtjs/composition-api'
-export default {
-  props: ['items'],
+<script lang="ts">
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  useRoute
+} from '@nuxtjs/composition-api'
+
+interface Item {
+  name: String;
+  value: String;
+}
+
+export default defineComponent({
+  props: {
+    items: {
+      type: Array as PropType<Item[]>,
+      required: true
+    }
+  },
   setup ({ items }) {
     const route = useRoute()
-    const dropdown = ref(false)
+    const dropdown = ref<Boolean>(false)
     const mainName = computed(() => {
       return !route.value.query.q
         ? items[0].name
-        : items.find(e => e.value == route.value.query.q).name
+        : (items.find((e: Item) => e.value === route.value.query.q) as Item)
+            .name
     })
     const showDropdown = () => {
       dropdown.value = !dropdown.value
     }
     return { dropdown, mainName, showDropdown, route }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

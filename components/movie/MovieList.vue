@@ -27,25 +27,27 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import {
   ref,
   computed,
   watch,
   useRoute,
   useFetch,
-  useContext
+  useContext,
+  defineComponent
 } from '@nuxtjs/composition-api'
-export default {
+import { Movie } from '~/interfaces/Movie'
+export default defineComponent({
   setup () {
     const route = useRoute()
     const { $axios } = useContext()
 
-    const items = ref([])
+    const items = ref<Movie[]>([])
     const totalPages = ref(null)
 
     const checkItems = computed(() => {
-      return !!(typeof items === 'undefined' || items.length < 1)
+      return (typeof items === 'undefined' || items.value.length < 1)
     })
 
     watch(
@@ -59,7 +61,7 @@ export default {
       try {
         const { query } = $route
         let dummyItems
-        if ($route.name == 'movies') {
+        if ($route.name === 'movies') {
           if (query.q) {
             dummyItems = await $axios.$get(
               `https://api.themoviedb.org/3/movie/${query.q}?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
@@ -73,9 +75,9 @@ export default {
               `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
             )
           }
-        } else if ($route.name == 'tvshows') {
+        } else if ($route.name === 'tvshows') {
           let i
-          const results = []
+          const results: Movie[] = []
           if (query.q) {
             i = await $axios.$get(
               `https://api.themoviedb.org/3/tv/${query.q}?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
@@ -89,7 +91,7 @@ export default {
               `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.apiKey}&language=en-US&page=${query.page}`
             )
           }
-          i.results.forEach((item) => {
+          i.results.forEach((item: any) => {
             results.push({
               ...item,
               title: item.name,
@@ -108,9 +110,10 @@ export default {
         console.log(err)
       }
     })
+    fetch()
     return { fetchState, checkItems, items, totalPages }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <div class="dropdown">
-      <Dropdown :items="showLinks" />
+      <DropDown :items="showLinks" />
     </div>
     <MovieList />
   </main>

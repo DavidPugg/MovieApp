@@ -1,3 +1,7 @@
+<template>
+  <h1>Hello world!</h1>
+</template>
+
 <script>
 import { useAsync, useRouter } from '@nuxtjs/composition-api'
 export default {

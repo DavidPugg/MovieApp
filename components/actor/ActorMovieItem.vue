@@ -11,10 +11,16 @@
   </NuxtLink>
 </template>
 
-<script>
-import { computed } from '@nuxtjs/composition-api'
-export default {
-  props: ['movie'],
+<script lang="ts">
+import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
+import { ActorMovie } from '~/interfaces/Actor'
+export default defineComponent({
+  props: {
+    movie: {
+      type: Object as PropType<ActorMovie>,
+      required: true
+    }
+  },
   setup ({ movie }) {
     const name = computed(() => {
       return movie.title ? movie.title : movie.name
@@ -24,7 +30,7 @@ export default {
     })
     return { name, isMovie }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

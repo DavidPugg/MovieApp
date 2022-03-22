@@ -12,13 +12,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, useFetch } from '@nuxtjs/composition-api'
+import { Actor } from '~/interfaces/Actor'
 export default {
   layout: 'noNavbar',
 
   setup () {
-    const cast = ref()
+    const cast = ref<Actor[]>()
     const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
       const credits = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`

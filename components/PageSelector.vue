@@ -94,10 +94,15 @@
   </div>
 </template>
 
-<script>
-import { useRoute, computed } from '@nuxtjs/composition-api'
-export default {
-  props: ['pages'],
+<script lang="ts">
+import { useRoute, computed, defineComponent } from '@nuxtjs/composition-api'
+export default defineComponent({
+  props: {
+    pages: {
+      type: Number,
+      required: true
+    }
+  },
   setup () {
     const route = useRoute()
     const currentPage = computed(() => {
@@ -105,7 +110,7 @@ export default {
     })
     return { currentPage, route }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

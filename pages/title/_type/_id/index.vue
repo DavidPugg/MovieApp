@@ -82,40 +82,42 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useFetch, useRoute, computed, ref } from '@nuxtjs/composition-api'
+import { Movie, Tv, Video } from '~/interfaces/Movie'
+import { Actor } from '~/interfaces/Actor'
 export default {
   layout: 'noNavbar',
 
   setup () {
-    const movie = ref()
-    const trailer = ref()
-    const cast = ref()
+    const movie = ref<Movie | Tv>({} as Tv)
+    const trailer = ref<{key: string}>()
+    const cast = ref<Actor[]>()
     const route = useRoute()
     const { params } = route.value
 
     const title = computed(() => {
-      return params.type == 'tv' ? movie.value.name : movie.value.original_title
+      return params.type === 'tv' ? (movie.value as Tv).name : (movie.value as Movie).original_title
     })
 
     const statOne = computed(() => {
-      return params.type == 'tv' ? movie.value.number_of_seasons : movie.value.budget
+      return params.type === 'tv' ? (movie.value as Tv).number_of_seasons : (movie.value as Movie).budget
     })
 
     const statTwo = computed(() => {
-      return params.type == 'tv' ? movie.value.number_of_episodes : movie.value.revenue
+      return params.type === 'tv' ? (movie.value as Tv).number_of_episodes : (movie.value as Movie).revenue
     })
 
     const statThree = computed(() => {
-      return params.type == 'tv' ? movie.value.episode_run_time[0] : movie.value.runtime
+      return params.type === 'tv' ? (movie.value as Tv).episode_run_time[0] : (movie.value as Movie).runtime
     })
 
     const statOneText = computed(() => {
-      return params.type == 'tv' ? 'Seasons: ' : 'Budget: $'
+      return params.type === 'tv' ? 'Seasons: ' : 'Budget: $'
     })
 
     const statTwoText = computed(() => {
-      return params.type == 'tv' ? 'Episodes: ' : 'Revenue: $'
+      return params.type === 'tv' ? 'Episodes: ' : 'Revenue: $'
     })
 
     const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
@@ -129,7 +131,7 @@ export default {
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
       )
       cast.value = credits.cast
-      trailer.value = videos.results.find(t => t.type == 'Trailer')
+      trailer.value = videos.results.find((t: Video) => t.type === 'Trailer')
     })
 
     fetch()

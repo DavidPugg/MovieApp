@@ -32,24 +32,24 @@
   </nav>
 </template>
 
-<script>
-import { ref, useRoute, useRouter } from '@nuxtjs/composition-api'
-export default {
+<script lang="ts">
+import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
+export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const userInput = ref('')
+    const userInput = ref<string>('')
 
     const search = () => {
       router.push({
-        name: route.value.name,
+        name: route.value.name as string,
         query: { s: userInput.value }
       })
       userInput.value = ''
     }
     return { userInput, search }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

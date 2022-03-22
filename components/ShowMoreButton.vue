@@ -12,10 +12,17 @@
   </NuxtLink>
 </template>
 
-<script>
-export default {
-  props: ['goTo']
-}
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  props: {
+    goTo: {
+      type: String,
+      required: true
+    }
+  }
+})
 </script>
 
 <style scoped lang="scss">

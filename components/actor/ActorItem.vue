@@ -17,9 +17,13 @@
 </template>
 
 <script lang="ts">
+import { Actor } from '~/interfaces/Actor'
 export default {
   props: {
-    actor: Object
+    actor: {
+      type: Object as () => Actor,
+      required: true
+    }
   }
 }
 </script>
