@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!fetchState.pending"
     class="backdrop container"
     :style="{
       'background-image': `linear-gradient(to right bottom, rgba(0,0,0, .85), rgba(0,0,0, .85)), url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`,
@@ -75,48 +76,71 @@
 </template>
 
 <script>
+import { computed, ref } from "@vue/composition-api";
+import { useFetch, useRoute } from "@nuxtjs/composition-api";
 export default {
   layout: "noNavbar",
-  computed: {
-    title() {
-      return this.$route.params.type == "tv"
-        ? this.movie.name
-        : this.movie.original_title;
-    },
-    statOne() {
-      return this.$route.params.type == "tv"
-        ? this.movie.number_of_seasons
-        : this.movie.budget;
-    },
-    statTwo() {
-      return this.$route.params.type == "tv"
-        ? this.movie.number_of_episodes
-        : this.movie.revenue;
-    },
-    statThree() {
-      return this.$route.params.type == "tv"
-        ? this.movie.episode_run_time[0]
-        : this.movie.runtime;
-    },
-    statOneText() {
-      return this.$route.params.type == "tv" ? "Seasons: " : "Budget: $";
-    },
-    statTwoText() {
-      return this.$route.params.type == "tv" ? "Episodes: " : "Revenue: $";
-    },
-  },
-  async asyncData({ $axios, params }) {
-    const movie = await $axios.$get(
-      `https://api.themoviedb.org/3/${params.type}/${params.id}?api_key=${process.env.apiKey}&language=en-US`
-    );
-    const videos = await $axios.$get(
-      `https://api.themoviedb.org/3/${params.type}/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
-    );
-    const credits = await $axios.$get(
-      `https://api.themoviedb.org/3/${params.type}/${params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
-    );
-    const trailer = videos.results.find((t) => t.type == "Trailer");
-    return { movie, trailer, cast: credits.cast };
+
+  setup() {
+    const route = useRoute();
+    const { params } = route.value;
+
+    const title = computed(() => {
+      return params.type == "tv" ? movie.name : movie.original_title;
+    });
+
+    const statOne = computed(() => {
+      return params.type == "tv" ? movie.number_of_seasons : movie.budget;
+    });
+
+    const statTwo = computed(() => {
+      return params.type == "tv" ? movie.number_of_episodes : movie.revenue;
+    });
+
+    const statThree = computed(() => {
+      return params.type == "tv" ? movie.episode_run_time[0] : movie.runtime;
+    });
+
+    const statOneText = computed(() => {
+      return params.type == "tv" ? "Seasons: " : "Budget: $";
+    });
+
+    const statTwoText = computed(() => {
+      return params.type == "tv" ? "Episodes: " : "Revenue: $";
+    });
+
+    const movie = ref();
+    const trailer = ref();
+    const cast = ref();
+
+    const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
+      movie.value = await $axios.$get(
+        `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}?api_key=${process.env.apiKey}&language=en-US`
+      );
+      const videos = await $axios.$get(
+        `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
+      );
+      const credits = await $axios.$get(
+        `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
+      );
+      cast.value = credits.cast;
+      trailer.value = videos.results.find((t) => t.type == "Trailer");
+    });
+
+    fetch();
+
+    return {
+      fetchState,
+      movie,
+      trailer,
+      cast,
+      title,
+      statOne,
+      statTwo,
+      statThree,
+      statOneText,
+      statTwoText,
+    };
   },
 };
 </script>

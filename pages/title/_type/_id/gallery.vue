@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!fetchState.pending">
     <div class="content">
       <h1 class="title heading-1">Videos</h1>
       <div class="videos">
@@ -18,25 +18,33 @@
 </template>
 
 <script>
+import { ref, useFetch, useRoute, useRouter } from "@nuxtjs/composition-api";
 export default {
-    layout: 'noNavbar',
-  async asyncData({ $axios, params }) {
-    const { results } = await $axios.$get(
-      `https://api.themoviedb.org/3/${params.type}/${params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
-    );
-    return { videos: results };
-  },
+  layout: "noNavbar",
 
-  methods: {
-    openVideo(id) {
-      this.$router.push(`${this.$route.path}/${id}`);
-    },
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const videos = ref([]);
+    const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
+      const { results } = await $axios.$get(
+        `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
+      );
+      videos.value = results;
+    });
+
+    const openVideo = (id) => {
+      router.push(`${route.value.path}/${id}`);
+    };
+
+    fetch();
+
+    return { videos, openVideo, fetchState };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .title {
   line-height: 1;
   border-bottom: 1px solid $color-primary-light;
@@ -55,12 +63,11 @@ export default {
     height: auto;
     border-radius: $border-radius-small;
     cursor: pointer;
-    transition: all .1s;
+    transition: all 0.1s;
 
     &:hover {
       outline: 1px solid $color-primary-dark;
     }
-
   }
 }
 </style>
