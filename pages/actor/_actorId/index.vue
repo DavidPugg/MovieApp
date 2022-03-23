@@ -7,9 +7,7 @@
         </h2>
         <div class="head__popularity-box">
           <p><b>Popularity</b></p>
-          <p class="head__popularity">
-            #{{ Math.round(actor.popularity) }}
-          </p>
+          <p class="head__popularity">#{{ Math.round(actor.popularity) }}</p>
         </div>
       </div>
       <div class="gallery">
@@ -17,7 +15,7 @@
           class="gallery__img"
           :src="`https://image.tmdb.org/t/p/w400${actor.profile_path}`"
           alt="Actor profile"
-        >
+        />
       </div>
       <div class="details">
         <p v-if="actor.biography" class="details__biography">
@@ -35,16 +33,15 @@
         <div class="details__birth">
           <p><b>Birthday: </b>{{ actor.birthday }}</p>
           <p>
-            <b>Death: </b><span :style="{ color: actor.deathday ? 'red' : 'lime' }">{{
+            <b>Death: </b
+            ><span :style="{ color: actor.deathday ? 'red' : 'lime' }">{{
               actor.deathday ? actor.deathday : "Alive"
             }}</span>
           </p>
         </div>
       </div>
       <div v-if="movies.cast.length > 0" class="movies">
-        <h2 class="heading-2 movies__title">
-          Movies
-        </h2>
+        <h2 class="heading-2 movies__title">Movies</h2>
         <div class="movies-list">
           <ActorMovieItem
             v-for="movie in movies.cast.slice(0, 5)"
@@ -57,9 +54,7 @@
         />
       </div>
       <div v-if="tv.cast.length > 0" class="tv">
-        <h2 class="heading-2 tv__title">
-          Tv shows
-        </h2>
+        <h2 class="heading-2 tv__title">Tv shows</h2>
         <div class="tv-list">
           <ActorMovieItem
             v-for="show in tv.cast.slice(0, 5)"
@@ -80,37 +75,37 @@ import {
   useContext,
   useFetch,
   ref,
-  defineComponent
-} from '@nuxtjs/composition-api'
-import { Actor } from '~/interfaces/Actor'
-import { Movie, Tv } from '~/interfaces/Movie'
+  defineComponent,
+} from "@nuxtjs/composition-api";
+import { Actor } from "~/interfaces/Actor";
+import { Movie, Tv } from "~/interfaces/Movie";
 export default defineComponent({
-  layout: 'noNavbar',
+  layout: "noNavbar",
 
-  setup () {
-    const { $axios } = useContext()
-    const actor = ref<Actor>({} as Actor)
-    const movies = ref<Movie[]>({} as Movie[])
-    const tv = ref<Tv[]>({} as Tv[])
+  setup() {
+    const { $axios } = useContext();
+    const actor = ref<Actor>({} as Actor);
+    const movies = ref<Movie[]>({} as Movie[]);
+    const tv = ref<Tv[]>({} as Tv[]);
 
     const { fetch, fetchState } = useFetch(async ({ $route }) => {
       actor.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}?api_key=${process.env.apiKey}&language=en-US`
-      )
+      );
 
       movies.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`
-      )
+      );
 
       tv.value = await $axios.$get(
         `https://api.themoviedb.org/3/person/${$route.params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`
-      )
-    })
+      );
+    });
 
-    fetch()
-    return { actor, movies, tv, fetchState }
-  }
-})
+    fetch();
+    return { actor, movies, tv, fetchState };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

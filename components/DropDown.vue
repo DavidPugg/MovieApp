@@ -34,8 +34,8 @@ import {
   defineComponent,
   PropType,
   ref,
-  useRoute
-} from '@nuxtjs/composition-api'
+  useRoute,
+} from "@nuxtjs/composition-api";
 
 interface Item {
   name: String;
@@ -46,24 +46,24 @@ export default defineComponent({
   props: {
     items: {
       type: Array as PropType<Item[]>,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup ({ items }) {
-    const route = useRoute()
-    const dropdown = ref<Boolean>(false)
+  setup({ items }) {
+    const route = useRoute();
+    const dropdown = ref<Boolean>(false);
     const mainName = computed((): String => {
       return !route.value.query.q
         ? items[0].name
         : (items.find((e: Item) => e.value === route.value.query.q) as Item)
-            .name
-    })
+            .name;
+    });
     const showDropdown = () => {
-      dropdown.value = !dropdown.value
-    }
-    return { dropdown, mainName, showDropdown, route }
-  }
-})
+      dropdown.value = !dropdown.value;
+    };
+    return { dropdown, mainName, showDropdown, route };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

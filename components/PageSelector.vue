@@ -95,22 +95,22 @@
 </template>
 
 <script lang="ts">
-import { useRoute, computed, defineComponent } from '@nuxtjs/composition-api'
+import { useRoute, computed, defineComponent } from "@nuxtjs/composition-api";
 export default defineComponent({
   props: {
     pages: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup () {
-    const route = useRoute()
+  setup() {
+    const route = useRoute();
     const currentPage = computed((): Number => {
-      return !route.value.query.page ? 1 : Number(route.value.query.page)
-    })
-    return { currentPage, route }
-  }
-})
+      return !route.value.query.page ? 1 : Number(route.value.query.page);
+    });
+    return { currentPage, route };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

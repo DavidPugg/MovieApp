@@ -6,7 +6,7 @@
       class="actor__img"
       :src="`https://image.tmdb.org/t/p/w200${actor.profile_path}`"
       alt="Actor img"
-    >
+    />
     <div class="names">
       <h4 class="actor__name">
         {{ actor.name }}
@@ -19,16 +19,16 @@
 </template>
 
 <script lang="ts">
-import { PropType } from '@vue/composition-api'
-import { Actor } from '~/interfaces/Actor'
+import { PropType } from "@vue/composition-api";
+import { Actor } from "~/interfaces/Actor";
 export default {
   props: {
     actor: {
       type: Object as PropType<Actor>,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

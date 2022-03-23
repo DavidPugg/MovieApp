@@ -1,8 +1,5 @@
 <template>
-  <NuxtLink
-    class="button"
-    :to="goTo"
-  >
+  <NuxtLink class="button" :to="goTo">
     <div class="button-box">
       <p>Show more</p>
       <svg class="button-icon">
@@ -13,16 +10,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   props: {
     goTo: {
       type: String,
-      required: true
-    }
-  }
-})
+      required: true,
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

@@ -8,35 +8,35 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent } from "@nuxtjs/composition-api";
 
 export default defineComponent({
-  setup () {
+  setup() {
     const movieLinks = [
       {
-        name: 'Popular',
-        value: 'popular'
+        name: "Popular",
+        value: "popular",
       },
       {
-        name: 'Latest',
-        value: 'latest'
+        name: "Latest",
+        value: "latest",
       },
       {
-        name: 'Top rated',
-        value: 'top_rated'
+        name: "Top rated",
+        value: "top_rated",
       },
       {
-        name: 'Now playing',
-        value: 'now_playing'
+        name: "Now playing",
+        value: "now_playing",
       },
       {
-        name: 'Upcoming',
-        value: 'upcoming'
-      }
-    ]
-    return { movieLinks }
-  }
-})
+        name: "Upcoming",
+        value: "upcoming",
+      },
+    ];
+    return { movieLinks };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

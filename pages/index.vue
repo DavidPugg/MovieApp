@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import { useAsync, useRouter } from '@nuxtjs/composition-api'
+import { useAsync, useRouter } from "@nuxtjs/composition-api";
 export default {
-  setup () {
-    const router = useRouter()
+  setup() {
+    const router = useRouter();
     useAsync(() => {
-      router.push({ name: 'movies' })
-    })
-  }
-}
+      router.push({ name: "movies" });
+    });
+  },
+};
 </script>

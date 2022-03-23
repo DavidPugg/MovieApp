@@ -1,9 +1,7 @@
 <template>
   <div v-if="!fetchState.pending" class="container">
     <div class="content">
-      <h1 class="title heading-1">
-        Cast
-      </h1>
+      <h1 class="title heading-1">Cast</h1>
       <div class="cast">
         <ActorItemBig v-for="actor in cast" :key="actor.id" :actor="actor" />
       </div>
@@ -13,23 +11,23 @@
 </template>
 
 <script lang="ts">
-import { ref, useFetch } from '@nuxtjs/composition-api'
-import { Actor } from '~/interfaces/Actor'
+import { ref, useFetch } from "@nuxtjs/composition-api";
+import { Actor } from "~/interfaces/Actor";
 export default {
-  layout: 'noNavbar',
+  layout: "noNavbar",
 
-  setup () {
-    const cast = ref<Actor[]>()
+  setup() {
+    const cast = ref<Actor[]>();
     const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
       const credits = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
-      )
-      cast.value = credits.cast
-    })
-    fetch()
-    return { cast, fetchState }
-  }
-}
+      );
+      cast.value = credits.cast;
+    });
+    fetch();
+    return { cast, fetchState };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

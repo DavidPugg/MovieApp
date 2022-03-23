@@ -14,7 +14,8 @@
             v-for="genre in movie.genres"
             :key="genre.id"
             class="head__title-genre"
-          >{{ genre.name }}</span>
+            >{{ genre.name }}</span
+          >
         </h2>
         <div class="head__rating-box">
           <p><b>Rating</b></p>
@@ -41,9 +42,7 @@
           <p class="details__revenue">
             <b>{{ statTwoText }}</b> {{ statTwo }}
           </p>
-          <p class="details__runtime">
-            <b>Runtime: </b> {{ statThree }}min
-          </p>
+          <p class="details__runtime"><b>Runtime: </b> {{ statThree }}min</p>
         </div>
       </div>
       <div v-if="trailer" class="gallery">
@@ -51,10 +50,7 @@
           class="gallery__video"
           :src="`https://www.youtube.com/embed/${trailer.key}`"
         />
-        <NuxtLink
-          class="gallery__button"
-          :to="`${$route.path}/gallery`"
-        >
+        <NuxtLink class="gallery__button" :to="`${$route.path}/gallery`">
           Videos
         </NuxtLink>
       </div>
@@ -63,12 +59,10 @@
           class="img"
           :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`"
           alt="Poster"
-        >
+        />
       </div>
       <div class="cast">
-        <h2 class="heading-2 cast__title">
-          Cast
-        </h2>
+        <h2 class="heading-2 cast__title">Cast</h2>
         <div class="actors">
           <ActorItem
             v-for="actor in cast.slice(0, 4)"
@@ -83,58 +77,66 @@
 </template>
 
 <script lang="ts">
-import { useFetch, useRoute, computed, ref } from '@nuxtjs/composition-api'
-import { Movie, Tv, Video } from '~/interfaces/Movie'
-import { Actor } from '~/interfaces/Actor'
+import { useFetch, useRoute, computed, ref } from "@nuxtjs/composition-api";
+import { Movie, Tv, Video } from "~/interfaces/Movie";
+import { Actor } from "~/interfaces/Actor";
 export default {
-  layout: 'noNavbar',
+  layout: "noNavbar",
 
-  setup () {
-    const movie = ref<Movie | Tv>({} as Tv)
-    const trailer = ref<{key: string}>()
-    const cast = ref<Actor[]>()
-    const route = useRoute()
-    const { params } = route.value
+  setup() {
+    const movie = ref<Movie | Tv>({} as Tv);
+    const trailer = ref<{ key: string }>();
+    const cast = ref<Actor[]>();
+    const route = useRoute();
+    const { params } = route.value;
 
     const title = computed(() => {
-      return params.type === 'tv' ? (movie.value as Tv).name : (movie.value as Movie).original_title
-    })
+      return params.type === "tv"
+        ? (movie.value as Tv).name
+        : (movie.value as Movie).original_title;
+    });
 
     const statOne = computed(() => {
-      return params.type === 'tv' ? (movie.value as Tv).number_of_seasons : (movie.value as Movie).budget
-    })
+      return params.type === "tv"
+        ? (movie.value as Tv).number_of_seasons
+        : (movie.value as Movie).budget;
+    });
 
     const statTwo = computed(() => {
-      return params.type === 'tv' ? (movie.value as Tv).number_of_episodes : (movie.value as Movie).revenue
-    })
+      return params.type === "tv"
+        ? (movie.value as Tv).number_of_episodes
+        : (movie.value as Movie).revenue;
+    });
 
     const statThree = computed(() => {
-      return params.type === 'tv' ? (movie.value as Tv).episode_run_time[0] : (movie.value as Movie).runtime
-    })
+      return params.type === "tv"
+        ? (movie.value as Tv).episode_run_time[0]
+        : (movie.value as Movie).runtime;
+    });
 
     const statOneText = computed(() => {
-      return params.type === 'tv' ? 'Seasons: ' : 'Budget: $'
-    })
+      return params.type === "tv" ? "Seasons: " : "Budget: $";
+    });
 
     const statTwoText = computed(() => {
-      return params.type === 'tv' ? 'Episodes: ' : 'Revenue: $'
-    })
+      return params.type === "tv" ? "Episodes: " : "Revenue: $";
+    });
 
     const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
       movie.value = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}?api_key=${process.env.apiKey}&language=en-US`
-      )
+      );
       const videos = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`
-      )
+      );
       const credits = await $axios.$get(
         `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`
-      )
-      cast.value = credits.cast
-      trailer.value = videos.results.find((t: Video) => t.type === 'Trailer')
-    })
+      );
+      cast.value = credits.cast;
+      trailer.value = videos.results.find((t: Video) => t.type === "Trailer");
+    });
 
-    fetch()
+    fetch();
 
     return {
       fetchState,
@@ -146,10 +148,10 @@ export default {
       statTwo,
       statThree,
       statOneText,
-      statTwoText
-    }
-  }
-}
+      statTwoText,
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">

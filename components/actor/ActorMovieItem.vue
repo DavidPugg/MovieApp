@@ -4,7 +4,7 @@
       class="movie__img"
       :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`"
       alt="Movie img"
-    >
+    />
     <h3 class="movie__title">
       {{ name }}
     </h3>
@@ -12,25 +12,25 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
-import { ActorMovie } from '~/interfaces/Actor'
+import { computed, defineComponent, PropType } from "@nuxtjs/composition-api";
+import { ActorMovie } from "~/interfaces/Actor";
 export default defineComponent({
   props: {
     movie: {
       type: Object as PropType<ActorMovie>,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup ({ movie }) {
+  setup({ movie }) {
     const name = computed(() => {
-      return movie.title ? movie.title : movie.name
-    })
+      return movie.title ? movie.title : movie.name;
+    });
     const isMovie = computed(() => {
-      return movie.title ? 'movie' : 'tv'
-    })
-    return { name, isMovie }
-  }
-})
+      return movie.title ? "movie" : "tv";
+    });
+    return { name, isMovie };
+  },
+});
 </script>
 
 <style scoped lang="scss">

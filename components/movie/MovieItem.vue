@@ -1,7 +1,7 @@
 <template>
   <NuxtLink class="link" :to="goTo">
     <div class="item">
-      <img class="img" :src="fullPoster" alt="">
+      <img class="img" :src="fullPoster" alt="" />
       <p class="rating">
         {{ rating }}
       </p>
@@ -13,40 +13,47 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, useRoute } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  useRoute,
+} from "@nuxtjs/composition-api";
 export default defineComponent({
   props: {
     poster: { type: String as PropType<String | null>, default: null },
     title: { type: String, required: true },
     rating: { type: Number, required: true },
     released: { type: String, required: true },
-    id: { type: Number, required: true }
+    id: { type: Number, required: true },
   },
 
-  setup ({ poster, title, id }) {
-    const route = useRoute()
-    const params = route.value
+  setup({ poster, title, id }) {
+    const route = useRoute();
+    const params = route.value;
 
     const fullPoster = computed((): String => {
-      return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : ''
-    })
+      return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : "";
+    });
 
     const goTo = computed((): String => {
-      if (params.name === 'tvshows') {
-        return `title/tv/${id}`
+      if (params.name === "tvshows") {
+        return `title/tv/${id}`;
       } else {
-        return `title/movie/${id}`
+        return `title/movie/${id}`;
       }
-    })
+    });
 
     const shortTitle = computed((): String => {
-      if (title.length <= 30) { return title }
-      return title.substring(0, 30) + '...'
-    })
+      if (title.length <= 30) {
+        return title;
+      }
+      return title.substring(0, 30) + "...";
+    });
 
-    return { fullPoster, goTo, shortTitle }
-  }
-})
+    return { fullPoster, goTo, shortTitle };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
