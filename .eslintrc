@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "@nuxtjs/eslint-config-typescript",
+    "plugin:nuxt/recommended"
+  ],
+  "rules": {
+    "no-console": "off",
+    "quotes": [2, "single", { "avoidEscape": true }],
+    "semi": [2, "always"],
+    "comma-dangle": 0,
+    "space-before-function-paren": "off",
+    "indent": "off",
+    "vue/html-indent": "off",
+    "vue/html-self-closing": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/html-closing-bracket-newline": "off"
+  }
+}
