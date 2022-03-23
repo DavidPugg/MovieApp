@@ -1,19 +1,19 @@
 <template>
     <NuxtLink class="movie" :to="{ path: `/title/${isMovie}/${movie.id}` }">
         <img class="movie__img" :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`" alt="Movie img" />
-        <h3 class="movie__title">
-            {{ name }}
-        </h3>
+        <SecondaryText :title="name" />
     </NuxtLink>
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, PropType } from '@nuxtjs/composition-api';
+    import { computed, defineComponent } from '@nuxtjs/composition-api';
+    import SecondaryText from '../atoms/SecondaryText.vue';
     import { ActorMovie } from '~/interfaces/Actor';
     export default defineComponent({
+        components: { SecondaryText },
         props: {
             movie: {
-                type: Object as PropType<ActorMovie>,
+                type: Object as () => ActorMovie,
                 required: true,
             },
         },
@@ -43,11 +43,6 @@
             width: auto;
             border-radius: $border-radius-medium;
             margin-bottom: 1rem;
-        }
-
-        &__title {
-            font-size: 1.6rem;
-            color: white;
         }
 
         &:hover {

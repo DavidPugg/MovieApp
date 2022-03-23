@@ -8,23 +8,21 @@
             alt="Actor img"
         />
         <div class="names">
-            <h4 class="actor__name">
-                {{ actor.name }}
-            </h4>
-            <h5 class="actor__character-name">
-                {{ actor.character }}
-            </h5>
+            <PrimaryText :title="actor.name" />
+            <SecondaryText :title="actor.character" />
         </div>
     </NuxtLink>
 </template>
 
 <script lang="ts">
-    import { PropType } from '@vue/composition-api';
+    import PrimaryText from '../atoms/PrimaryText.vue';
+    import SecondaryText from '../atoms/SecondaryText.vue';
     import { Actor } from '~/interfaces/Actor';
     export default {
+        components: { PrimaryText, SecondaryText },
         props: {
             actor: {
-                type: Object as PropType<Actor>,
+                type: Object as () => Actor,
                 required: true,
             },
         },
@@ -47,20 +45,6 @@
 
         &__names {
             text-align: center;
-        }
-
-        &__name,
-        &__character-name {
-            font-size: 1.6rem;
-            text-align: center;
-        }
-
-        &__name {
-            color: $color-primary-dark;
-        }
-
-        &__character-name {
-            color: white;
         }
 
         &:hover {

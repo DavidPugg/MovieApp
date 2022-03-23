@@ -2,23 +2,24 @@
     <NuxtLink :to="{ path: `/actor/${actor.id}` }" class="actor">
         <img class="actor__img" :src="`https://image.tmdb.org/t/p/w200${actor.profile_path}`" alt="Actor img" />
         <div class="actor__names">
-            <h4 class="actor__name">
-                {{ actor.name }}
-            </h4>
-            <h5 class="actor__character-name">
-                {{ actor.character }}
-            </h5>
+            <PrimaryText :title="actor.name" />
+            <SecondaryText :title="actor.character" />
         </div>
     </NuxtLink>
 </template>
 
 <script lang="ts">
-    import { PropType } from '@vue/composition-api';
+    import PrimaryText from '~/components/atoms/PrimaryText.vue';
+    import SecondaryText from '~/components/atoms/SecondaryText.vue';
     import { Actor } from '~/interfaces/Actor';
     export default {
+        components: {
+            PrimaryText,
+            SecondaryText,
+        },
         props: {
             actor: {
-                type: Object as PropType<Actor>,
+                type: Object as () => Actor,
                 required: true,
             },
         },
@@ -44,17 +45,6 @@
             flex-direction: column;
             justify-content: center;
             font-size: 1.6rem;
-        }
-
-        &__name {
-            color: $color-primary-dark;
-        }
-
-        &__character-name {
-            display: flex;
-            flex-wrap: wrap;
-            color: white;
-            margin-left: 0.5rem;
         }
 
         &:hover {

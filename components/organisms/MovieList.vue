@@ -1,11 +1,6 @@
 <template>
     <section class="movies">
-        <div v-if="fetchState.pending" class="lds-ring loader">
-            <div />
-            <div />
-            <div />
-            <div />
-        </div>
+        <Loader v-if="fetchState.pending" class="loader" />
         <p v-if="checkItems && !fetchState.pending" class="text">No movies found!</p>
         <MovieItem
             v-for="item in items"
@@ -24,8 +19,12 @@
 
 <script lang="ts">
     import { ref, computed, watch, useRoute, useFetch, useContext, defineComponent } from '@nuxtjs/composition-api';
+    import Loader from '../atoms/Loader.vue';
     import { Movie } from '~/interfaces/Movie';
     export default defineComponent({
+        components: {
+            Loader,
+        },
         setup() {
             const route = useRoute();
             const { $axios } = useContext();
