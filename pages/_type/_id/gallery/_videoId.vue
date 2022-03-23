@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="modal" :to="{ path: `/title/${$route.params.type}/${$route.params.id}/gallery` }">
+    <NuxtLink class="modal" :to="{ path: `/${$route.params.type}/${$route.params.id}/gallery` }">
         <iframe
             class="video"
             :src="`https://www.youtube.com/embed/${$route.params.videoId}?autoplay=1&cc_load_policy=1`"

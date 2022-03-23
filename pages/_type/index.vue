@@ -12,7 +12,7 @@
     import { Movie, Tv } from '~/interfaces/Movie';
     import { ApiResponse } from '~/interfaces/Response';
 
-    const dropdownItems = ['Popular', 'Latest', 'Top rated', 'Now playing', 'Upcoming'];
+    const dropdownItems = ['Popular', 'Top rated', 'Now playing', 'Upcoming'];
 
     export default defineComponent({
         setup() {

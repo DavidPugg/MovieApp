@@ -1,59 +1,60 @@
 <template>
     <div
-        v-if="!fetchState.pending"
-        class="backdrop container"
+        class="backdrop"
         :style="{
             'background-image': `linear-gradient(to right bottom, rgba(0,0,0, .85), rgba(0,0,0, .85)), url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`,
         }"
     >
-        <div class="content">
-            <div class="head">
-                <h2 class="head__title heading-1">
-                    <span class="head__title-main">{{ title }}</span>
-                    <span v-for="genre in movie.genres" :key="genre.id" class="head__title-genre">{{
-                        genre.name
-                    }}</span>
-                </h2>
-                <div class="head__rating-box">
-                    <p><b>Rating</b></p>
-                    <p class="head__rating">
-                        {{ movie.vote_average }}
-                    </p>
+        <div v-if="!fetchState.pending" class="container">
+            <div class="content">
+                <div class="head">
+                    <h2 class="head__title heading-1">
+                        <span class="head__title-main">{{ title }}</span>
+                        <span v-for="genre in movie.genres" :key="genre.id" class="head__title-genre">{{
+                            genre.name
+                        }}</span>
+                    </h2>
+                    <div class="head__rating-box">
+                        <p><b>Rating</b></p>
+                        <p class="head__rating">
+                            {{ movie.vote_average }}
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="details">
-                <p v-if="movie.overview" class="details__overview">
-                    {{ movie.overview }}
-                </p>
-                <p v-else class="details__overview">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus at fugiat blanditiis
-                    dignissimos inventore doloremque harum hic magnam quod tempore, laboriosam, similique repellat? Illo
-                    voluptatem animi obcaecati quidem blanditiis! Autem.
-                </p>
-                <div class="details__stats">
-                    <p class="details__budget">
-                        <b>{{ statOneText }}</b>
-                        {{ statOne }}
+                <div class="details">
+                    <p v-if="movie.overview" class="details__overview">
+                        {{ movie.overview }}
                     </p>
-                    <p class="details__revenue">
-                        <b>{{ statTwoText }}</b> {{ statTwo }}
+                    <p v-else class="details__overview">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus at fugiat blanditiis
+                        dignissimos inventore doloremque harum hic magnam quod tempore, laboriosam, similique repellat?
+                        Illo voluptatem animi obcaecati quidem blanditiis! Autem.
                     </p>
-                    <p class="details__runtime"><b>Runtime: </b> {{ statThree }}min</p>
+                    <div class="details__stats">
+                        <p class="details__budget">
+                            <b>{{ statOneText }}</b>
+                            {{ statOne }}
+                        </p>
+                        <p class="details__revenue">
+                            <b>{{ statTwoText }}</b> {{ statTwo }}
+                        </p>
+                        <p class="details__runtime"><b>Runtime: </b> {{ statThree }}min</p>
+                    </div>
                 </div>
-            </div>
-            <div v-if="trailer" class="gallery">
-                <iframe class="gallery__video" :src="`https://www.youtube.com/embed/${trailer.key}`" />
-                <NuxtLink class="gallery__button" :to="`${$route.path}/gallery`"> Videos </NuxtLink>
-            </div>
-            <div v-else class="poster">
-                <img class="img" :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`" alt="Poster" />
-            </div>
-            <div class="cast">
-                <h2 class="heading-2 cast__title">Cast</h2>
-                <div class="actors">
-                    <ActorItem v-for="actor in cast.slice(0, 4)" :key="actor.id" :actor="actor" />
+                <div v-if="trailer" class="gallery">
+                    <iframe class="gallery__video" :src="`https://www.youtube.com/embed/${trailer.key}`" />
+                    <NuxtLink class="gallery__button" :to="`${$route.path}/gallery`"> Videos </NuxtLink>
                 </div>
-                <ShowMoreButton :go-to="{ path: `${$route.path}/cast` }" />
+                <div v-else class="poster">
+                    <img class="img" :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`" alt="Poster" />
+                </div>
+                <div class="cast">
+                    <h2 class="heading-2 cast__title">Cast</h2>
+                    <div class="actors">
+                        <ActorItem v-for="actor in cast.slice(0, 4)" :key="actor.id" :actor="actor" />
+                    </div>
+                    <ShowMoreButton :go-to="{ path: `${$route.path}/cast` }" />
+                </div>
             </div>
         </div>
     </div>

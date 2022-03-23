@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="link" :to="goTo">
+    <NuxtLink class="link" :to="`/${$route.params.type || 'movie'}/${id}`">
         <div class="item">
             <img class="img" :src="fullPoster" alt="" />
             <p class="rating">
@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, useRoute } from '@nuxtjs/composition-api';
+    import { computed, defineComponent } from '@nuxtjs/composition-api';
     import SecondaryText from '~/components/atoms/SecondaryText.vue';
     export default defineComponent({
         components: {
-            SecondaryText
+            SecondaryText,
         },
         props: {
             poster: { type: String as () => String | null, default: null },
@@ -25,20 +25,9 @@
             id: { type: Number, required: true },
         },
 
-        setup({ poster, title, id }) {
-            const route = useRoute();
-            const params = route.value;
-
+        setup({ poster, title }) {
             const fullPoster = computed((): String => {
                 return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : '';
-            });
-
-            const goTo = computed((): String => {
-                if (params.name === 'tvshows') {
-                    return `title/tv/${id}`;
-                } else {
-                    return `title/movie/${id}`;
-                }
             });
 
             const shortTitle = computed((): String => {
@@ -48,7 +37,7 @@
                 return title.substring(0, 30) + '...';
             });
 
-            return { fullPoster, goTo, shortTitle };
+            return { fullPoster, shortTitle };
         },
     });
 </script>

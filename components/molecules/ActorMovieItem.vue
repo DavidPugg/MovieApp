@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="movie" :to="{ path: `/title/${isMovie}/${movie.id}` }">
+    <NuxtLink class="movie" :to="`/${isMovie}/${movie.id}`">
         <img class="movie__img" :src="`https://image.tmdb.org/t/p/w200${movie.poster_path}`" alt="Movie img" />
         <SecondaryText :title="name" />
     </NuxtLink>
