@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, PropType, useRoute } from '@nuxtjs/composition-api';
+    import { computed, defineComponent, useRoute } from '@nuxtjs/composition-api';
     export default defineComponent({
         props: {
-            poster: { type: String as PropType<String | null>, default: null },
+            poster: { type: String as () => String | null, default: null },
             title: { type: String, required: true },
             rating: { type: Number, required: true },
             released: { type: String, required: true },

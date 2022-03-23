@@ -18,10 +18,10 @@
             },
         },
         setup({ movie }) {
-            const name = computed(() => {
-                return movie.title ? movie.title : movie.name;
+            const name = computed((): String => {
+                return (movie.title ? movie.title : movie.name) as String;
             });
-            const isMovie = computed(() => {
+            const isMovie = computed((): String => {
                 return movie.title ? 'movie' : 'tv';
             });
             return { name, isMovie };

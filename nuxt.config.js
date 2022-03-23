@@ -28,7 +28,7 @@ export default {
     css: ['~/assets/css/main.scss', '~/assets/css/spinner.scss'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['~/plugins/directives.js'],
+    plugins: ['~/plugins/directives.ts'],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: {
@@ -49,7 +49,7 @@ export default {
     },
 
     env: {
-        apiKey: '52a247d577cea428067dde5c993fb857',
+        apiKey: process.env.API_KEY,
     },
 
     server: {

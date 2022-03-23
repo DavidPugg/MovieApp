@@ -15,7 +15,7 @@
     export default defineComponent({
         props: {
             goTo: {
-                type: String,
+                type: Object,
                 required: true,
             },
         },

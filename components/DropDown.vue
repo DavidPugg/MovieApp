@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, PropType, ref, useRoute } from '@nuxtjs/composition-api';
+    import { computed, defineComponent, ref, useRoute } from '@nuxtjs/composition-api';
 
     interface Item {
         name: String;
@@ -34,7 +34,7 @@
     export default defineComponent({
         props: {
             items: {
-                type: Array as PropType<Item[]>,
+                type: Array as () => Item[],
                 required: true,
             },
         },
