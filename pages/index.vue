@@ -1,15 +1,26 @@
 <template>
-    <h1>Hello world!</h1>
+    <main class="container">
+        <div class="dropdown">
+            <DropDown :items="SortLinks" />
+        </div>
+        <MovieList />
+    </main>
 </template>
 
 <script>
-    import { useAsync, useRouter } from '@nuxtjs/composition-api';
-    export default {
+    import { defineComponent } from '@nuxtjs/composition-api';
+    export default defineComponent({
         setup() {
-            const router = useRouter();
-            useAsync(() => {
-                router.push({ name: 'movies' });
-            });
         },
-    };
+    });
 </script>
+
+<style lang="scss" scoped>
+    .container {
+        grid-row-gap: 2rem;
+    }
+
+    .dropdown {
+        grid-column: main-start / main-end;
+    }
+</style>

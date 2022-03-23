@@ -1,7 +1,7 @@
 <template>
     <main class="container">
         <div class="dropdown">
-            <DropDown :items="movieLinks" />
+            <DropDown :items="dropdownItems" />
         </div>
         <MovieList />
     </main>
@@ -9,41 +9,12 @@
 
 <script>
     import { defineComponent } from '@nuxtjs/composition-api';
+
+    const dropdownItems = ['Popular', 'Latest', 'Top rated', 'Now playing', 'Upcoming'];
+
     export default defineComponent({
         setup() {
-            const movieLinks = [
-                {
-                    name: 'Popular',
-                    value: 'popular',
-                },
-                {
-                    name: 'Latest',
-                    value: 'latest',
-                },
-                {
-                    name: 'Top rated',
-                    value: 'top_rated',
-                },
-                {
-                    name: 'Now playing',
-                    value: 'now_playing',
-                },
-                {
-                    name: 'Upcoming',
-                    value: 'upcoming',
-                },
-            ];
-            return { movieLinks };
+            return { dropdownItems };
         },
     });
 </script>
-
-<style lang="scss" scoped>
-    .container {
-        grid-row-gap: 2rem;
-    }
-
-    .dropdown {
-        grid-column: main-start / main-end;
-    }
-</style>

@@ -28,18 +28,14 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api';
+    import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api';
     export default defineComponent({
         setup() {
             const router = useRouter();
-            const route = useRoute();
             const userInput = ref<string>('');
 
             const search = () => {
-                router.push({
-                    name: route.value.name as string,
-                    query: { s: userInput.value },
-                });
+                router.push(`/search?s=${userInput.value}&page=1`);
                 userInput.value = '';
             };
             return { userInput, search };

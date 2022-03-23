@@ -10,13 +10,13 @@
             <div v-if="dropdown" v-click-outside="showDropdown" class="sort-dropdown" @click="showDropdown">
                 <NuxtLink
                     v-for="item in items"
-                    :key="item.name"
+                    :key="item"
                     class="sort-dropdown__item"
-                    :class="{ hidden: mainName == item.name }"
-                    :to="{ name: route.name, query: { q: item.value } }"
+                    :class="{ hidden: mainName == item }"
+                    :to="{ name: $route.name, query: { ...$route.query, q: getValue(item), page: 1 } }"
                     @click.native="showDropdown"
                 >
-                    {{ item.name }}
+                    {{ item }}
                 </NuxtLink>
             </div>
         </transition>
@@ -26,15 +26,10 @@
 <script lang="ts">
     import { computed, defineComponent, ref, useRoute } from '@nuxtjs/composition-api';
 
-    interface Item {
-        name: String;
-        value: String;
-    }
-
     export default defineComponent({
         props: {
             items: {
-                type: Array as () => Item[],
+                type: Array as () => String[],
                 required: true,
             },
         },
@@ -43,13 +38,17 @@
             const dropdown = ref<Boolean>(false);
             const mainName = computed((): String => {
                 return !route.value.query.q
-                    ? items[0].name
-                    : (items.find((e: Item) => e.value === route.value.query.q) as Item).name;
+                    ? items[0]
+                    : (items.find((e: String) => getValue(e) === route.value.query.q) as String);
             });
+            const getValue = (item: String) => {
+                return item.toLowerCase().replace(' ', '_');
+            };
+
             const showDropdown = () => {
                 dropdown.value = !dropdown.value;
             };
-            return { dropdown, mainName, showDropdown, route };
+            return { dropdown, mainName, showDropdown, getValue };
         },
     });
 </script>
@@ -66,7 +65,6 @@
     }
 
     .sort {
-        grid-column: 1 / -1;
         position: relative;
         font-size: 1.8rem;
         user-select: none;
