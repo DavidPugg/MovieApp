@@ -38,31 +38,22 @@
                     </p>
                 </div>
             </div>
-            <div v-if="movies.cast.length > 0" class="movies">
-                <h2 class="heading-2 movies__title">Movies</h2>
-                <div class="movies-list">
-                    <ActorMovieItem v-for="movie in movies.cast.slice(0, 5)" :key="movie.id" :movie="movie" />
-                </div>
-                <ShowMoreButton :go-to="{ path: `${$route.path}/movies`, query: { t: 'movies' } }" />
-            </div>
-            <div v-if="tv.cast.length > 0" class="tv">
-                <h2 class="heading-2 tv__title">Tv shows</h2>
-                <div class="tv-list">
-                    <ActorMovieItem v-for="show in tv.cast.slice(0, 5)" :key="show.id" :movie="show" />
-                </div>
-                <ShowMoreButton :go-to="{ path: `${$route.path}/movies`, query: { t: 'tv' } }" />
-            </div>
+            <Cast v-if="movies.cast.length > 0" type="movies" :items="movies.cast.slice(0, 5)" title="Movies" />
+            <Cast v-if="tv.cast.length > 0" type="movies" :items="tv.cast.slice(0, 5)" title="Tv shows" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { useContext, useFetch, ref, defineComponent } from '@nuxtjs/composition-api';
+    import Cast from '~/components/organisms/Cast.vue';
     import { Actor } from '~/interfaces/Actor';
     import { Movie, Tv } from '~/interfaces/Movie';
     export default defineComponent({
+        components: {
+            Cast,
+        },
         layout: 'noNavbar',
-
         setup() {
             const { $axios } = useContext();
             const actor = ref<Actor>({} as Actor);
@@ -186,29 +177,6 @@
         @media only screen and (max-width: $size-medium) {
             grid-column: 1 / -1;
             text-align: center;
-        }
-    }
-
-    .movies,
-    .tv {
-        grid-column: 1 / -1;
-
-        display: grid;
-        grid-template-rows: repeat(3, min-content);
-        grid-row-gap: 2rem;
-
-        margin-top: 3rem;
-
-        &__title {
-            line-height: 1;
-            border-bottom: 1px solid $color-primary-light;
-            padding-bottom: 1rem;
-        }
-
-        &-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-            justify-items: center;
         }
     }
 </style>
