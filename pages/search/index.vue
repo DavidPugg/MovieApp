@@ -10,11 +10,7 @@
 <script lang="ts">
     import { defineComponent, ref, useContext, useFetch, useRoute, watch } from '@nuxtjs/composition-api';
     import { Movie, Tv } from '~/interfaces/Movie';
-
-    interface Items {
-        results: Movie[] | Tv[];
-        total_pages: Number;
-    }
+    import { ApiResponse } from '~/interfaces/Response';
 
     const dropdownItems = ['Movie', 'Tv'];
 
@@ -22,7 +18,7 @@
         setup() {
             const { $axios } = useContext();
             const route = useRoute();
-            const items = ref<Items>({} as Items);
+            const items = ref<ApiResponse<Movie | Tv>>({} as ApiResponse<Movie | Tv>);
 
             watch(
                 () => route.value,
@@ -31,7 +27,7 @@
 
             const { fetch, fetchState } = useFetch(async ({ $route }) => {
                 const { query } = $route;
-                items.value = await $axios.$get(
+                items.value = await $axios.$get<ApiResponse<Movie | Tv>>(
                     `https://api.themoviedb.org/3/search/${query.q || 'movie'}?api_key=${
                         process.env.apiKey
                     }&language=en-US&page=${query.page}&query=${query.s}`,

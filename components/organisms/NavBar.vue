@@ -3,16 +3,16 @@
         <div class="container">
             <div class="nav">
                 <NuxtLink
-                    :to="{ name: 'tvshows', query: { q: 'popular' } }"
+                    to="/tv"
                     class="select"
-                    :class="{ selected: $route.name === 'tvshows' }"
+                    :class="{ selected: $route.params.type === 'tv' }"
                 >
                     Tv Shows
                 </NuxtLink>
                 <NuxtLink
-                    :to="{ name: 'movies', query: { q: 'popular' } }"
+                    to="/movie"
                     class="select"
-                    :class="{ selected: $route.name === 'movies' }"
+                    :class="{ selected: $route.params.type === 'movie' }"
                 >
                     Movies
                 </NuxtLink>

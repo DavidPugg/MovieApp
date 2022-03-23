@@ -26,9 +26,9 @@
             );
 
             const { fetch, fetchState } = useFetch(async ({ $route }) => {
-                const { query } = $route;
+                const { query, params } = $route;
                 items.value = await $axios.$get(
-                    `https://api.themoviedb.org/3/movie/${query.q || 'popular'}?api_key=${
+                    `https://api.themoviedb.org/3/${params.type}/${query.q || 'popular'}?api_key=${
                         process.env.apiKey
                     }&language=en-US&page=${query.page || 1}`,
                 );
