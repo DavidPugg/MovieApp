@@ -1,19 +1,21 @@
 <template>
-    <div v-if="!fetchState.pending" class="container">
-        <div class="content">
-            <h1 class="title heading-1">Videos</h1>
-            <div class="videos">
-                <img
-                    v-for="video in videos"
-                    :key="video.id"
-                    class="videos__img"
-                    :src="`http://img.youtube.com/vi/${video.key}/0.jpg`"
-                    alt=""
-                    @click="openVideo(video.key)"
-                />
+    <div class="relative">
+        <div v-if="!fetchState.pending" class="container">
+            <div class="content">
+                <h1 class="title heading-1">Videos</h1>
+                <div class="videos">
+                    <img
+                        v-for="video in videos"
+                        :key="video.id"
+                        class="videos__img"
+                        :src="`http://img.youtube.com/vi/${video.key}/0.jpg`"
+                        alt=""
+                        @click="openVideo(video.key)"
+                    />
+                </div>
             </div>
         </div>
-        <NuxtChild />
+                        <NuxtChild />
     </div>
 </template>
 
@@ -47,6 +49,10 @@
 </script>
 
 <style lang="scss" scoped>
+    .relative {
+        position: relative;
+    }
+
     .title {
         line-height: 1;
         border-bottom: 1px solid $color-primary-light;
