@@ -60,9 +60,10 @@
     import Cast from '~/components/organisms/Cast.vue';
     import { Movie, Tv, Video } from '~/interfaces/Movie';
     import { Actor } from '~/interfaces/Actor';
+    import { fetchMovie, fetchMovieCredits, fetchMovieVideos } from '~/utils/MoviesAPI';
     export default {
         components: {
-            Cast
+            Cast,
         },
         layout: 'noNavbar',
         setup() {
@@ -96,16 +97,13 @@
                 return params.type === 'tv' ? 'Episodes: ' : 'Revenue: $';
             });
 
-            const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
-                movie.value = await $axios.$get(
-                    `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}?api_key=${process.env.apiKey}&language=en-US`,
-                );
-                const videos = await $axios.$get(
-                    `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`,
-                );
-                const credits = await $axios.$get(
-                    `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/credits?api_key=${process.env.apiKey}&language=en-US`,
-                );
+            const { fetch, fetchState } = useFetch(async ({ $route }) => {
+                const { type, id } = $route.params;
+
+                movie.value = await fetchMovie({ type, id });
+                const videos = await fetchMovieVideos({ type, id });
+                const credits = await fetchMovieCredits({ type, id });
+
                 cast.value = credits.cast;
                 trailer.value = videos.results.find((t: Video) => t.type === 'Trailer');
             });

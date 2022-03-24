@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="link" :to="`/${$route.params.type || 'movie'}/${id}`">
+    <NuxtLink class="link" :to="`/${$route.params.type || $route.query.q || 'movie'}/${id}`">
         <div class="item">
             <img class="img" :src="fullPoster" alt="" />
             <p class="rating">

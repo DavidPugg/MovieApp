@@ -8,7 +8,8 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, useContext, useFetch, useRoute, watch } from '@nuxtjs/composition-api';
+    import { defineComponent, ref, useFetch, useRoute, watch } from '@nuxtjs/composition-api';
+    import { fetchSearchResults } from '~/utils/MoviesAPI';
     import { Movie, Tv } from '~/interfaces/Movie';
     import { ApiResponse } from '~/interfaces/Response';
 
@@ -16,7 +17,6 @@
 
     export default defineComponent({
         setup() {
-            const { $axios } = useContext();
             const route = useRoute();
             const items = ref<ApiResponse<Movie | Tv>>({} as ApiResponse<Movie | Tv>);
 
@@ -26,12 +26,8 @@
             );
 
             const { fetch, fetchState } = useFetch(async ({ $route }) => {
-                const { query } = $route;
-                items.value = await $axios.$get<ApiResponse<Movie | Tv>>(
-                    `https://api.themoviedb.org/3/search/${query.q || 'movie'}?api_key=${
-                        process.env.apiKey
-                    }&language=en-US&page=${query.page}&query=${query.s}`,
-                );
+                const { q, page, s } = $route.query;
+                items.value = await fetchSearchResults(page as String, s as String, q as String);
             });
 
             fetch();

@@ -8,7 +8,7 @@
             :title="item.title || item.name"
             :genre="item.genre_ids"
             :rating="item.vote_average"
-            :released="item.release_date || items.first_air_date"
+            :released="item.release_date || item.first_air_date"
         />
         <PageSelector :pages="items.total_pages" />
     </section>
@@ -20,7 +20,7 @@
     export default defineComponent({
         props: {
             items: {
-                type: Object as () => Movie | Tv,
+                type: Object as () => Movie[] | Tv[],
                 required: true,
             },
         },

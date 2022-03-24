@@ -7,7 +7,7 @@
         <div v-else class="items-list">
             <ActorItem v-for="actor in items" :key="actor.id" :actor="actor" />
         </div>
-        <ShowMoreButton :go-to="{ path: `${$route.path}/${type}`, query: { t: 'movies' } }" />
+        <ShowMoreButton :go-to="{ path: `${$route.path}/${type}`, query: { t: type === 'movies' ? 'movies' : undefined } }" />
     </div>
 </template>
 
@@ -27,7 +27,7 @@
                 required: true,
             },
             items: {
-                type: Object as () => Actor | ActorMovie,
+                type: Array as () => Actor[] | ActorMovie[],
                 required: true,
             },
         },

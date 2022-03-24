@@ -13,16 +13,16 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, ref, useContext, useFetch, useRoute, useRouter } from '@nuxtjs/composition-api';
+    import { computed, defineComponent, ref, useFetch, useRoute, useRouter } from '@nuxtjs/composition-api';
+    import { fetchPersonMovieCredits, fetchPersonTvCredits } from '~/utils/PersonAPI';
     import { Movie, Tv } from '~/interfaces/Movie';
     export default defineComponent({
         layout: 'noNavbar',
 
         setup() {
-            const { $axios } = useContext();
             const router = useRouter();
             const route = useRoute();
-            const { query, params } = route.value;
+            const { query } = route.value;
             const items = ref<Movie[] | Tv[]>([]);
 
             const name = computed(() => {
@@ -33,15 +33,12 @@
                 router.push(`${route.value.path}/${id}`);
             };
 
-            const { fetch, fetchState } = useFetch(async () => {
+            const { fetch, fetchState } = useFetch(async ({ $route }) => {
+                const { actorId } = $route.params;
                 if (query.t === 'movies') {
-                    items.value = await $axios.$get(
-                        `https://api.themoviedb.org/3/person/${params.actorId}/movie_credits?api_key=${process.env.apiKey}&language=en-US`,
-                    );
+                    items.value = await fetchPersonMovieCredits(actorId);
                 } else {
-                    items.value = await $axios.$get(
-                        `https://api.themoviedb.org/3/person/${params.actorId}/tv_credits?api_key=${process.env.apiKey}&language=en-US`,
-                    );
+                    items.value = await fetchPersonTvCredits(actorId);
                 }
             });
             fetch();

@@ -8,15 +8,15 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, useContext, useFetch, useRoute, watch } from '@nuxtjs/composition-api';
+    import { defineComponent, ref, useFetch, useRoute, watch } from '@nuxtjs/composition-api';
     import { Movie, Tv } from '~/interfaces/Movie';
     import { ApiResponse } from '~/interfaces/Response';
+    import { fetchMovies } from '~/utils/MoviesAPI';
 
     const dropdownItems = ['Popular', 'Top rated', 'Now playing', 'Upcoming'];
 
     export default defineComponent({
         setup() {
-            const { $axios } = useContext();
             const route = useRoute();
             const items = ref<ApiResponse<Movie | Tv>>();
 
@@ -26,12 +26,12 @@
             );
 
             const { fetch, fetchState } = useFetch(async ({ $route }) => {
-                const { query } = $route;
-                items.value = await $axios.$get(
-                    `https://api.themoviedb.org/3/movie/${query.q || 'popular'}?api_key=${
-                        process.env.apiKey
-                    }&language=en-US&page=${query.page || 1}`,
-                );
+                const { page, q } = $route.query;
+                items.value = await fetchMovies({
+                    type: 'movie',
+                    page: page as String,
+                    query: q as String,
+                });
             });
             fetch();
 

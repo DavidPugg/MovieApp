@@ -20,6 +20,7 @@
 <script lang="ts">
     import { ref, useFetch, useRoute, useRouter } from '@nuxtjs/composition-api';
     import { Video } from '~/interfaces/Movie';
+    import { fetchMovieVideos } from '~/utils/MoviesAPI';
 
     export default {
         layout: 'noNavbar',
@@ -28,10 +29,9 @@
             const router = useRouter();
             const route = useRoute();
             const videos = ref<Video[]>([]);
-            const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
-                const { results } = await $axios.$get(
-                    `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`,
-                );
+            const { fetch, fetchState } = useFetch(async ({ $route }) => {
+                const { type, id } = $route.params;
+                const { results } = await fetchMovieVideos({ type, id });
                 videos.value = results;
             });
 
