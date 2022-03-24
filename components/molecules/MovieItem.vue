@@ -1,20 +1,22 @@
 <template>
-    <NuxtLink class="link" :to="goTo">
+    <NuxtLink class="link" :to="`/${$route.params.type || $route.query.q || 'movie'}/${id}`">
         <div class="item">
             <img class="img" :src="fullPoster" alt="" />
             <p class="rating">
                 {{ rating }}
             </p>
-            <h4 class="title">
-                {{ shortTitle }}
-            </h4>
+            <SecondaryText class="title" :title="shortTitle" />
         </div>
     </NuxtLink>
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, useRoute } from '@nuxtjs/composition-api';
+    import { computed, defineComponent } from '@nuxtjs/composition-api';
+    import SecondaryText from '~/components/atoms/SecondaryText.vue';
     export default defineComponent({
+        components: {
+            SecondaryText,
+        },
         props: {
             poster: { type: String as () => String | null, default: null },
             title: { type: String, required: true },
@@ -23,20 +25,9 @@
             id: { type: Number, required: true },
         },
 
-        setup({ poster, title, id }) {
-            const route = useRoute();
-            const params = route.value;
-
+        setup({ poster, title }) {
             const fullPoster = computed((): String => {
                 return poster != null ? `https://image.tmdb.org/t/p/w200${poster}` : '';
-            });
-
-            const goTo = computed((): String => {
-                if (params.name === 'tvshows') {
-                    return `title/tv/${id}`;
-                } else {
-                    return `title/movie/${id}`;
-                }
             });
 
             const shortTitle = computed((): String => {
@@ -46,7 +37,7 @@
                 return title.substring(0, 30) + '...';
             });
 
-            return { fullPoster, goTo, shortTitle };
+            return { fullPoster, shortTitle };
         },
     });
 </script>
@@ -61,7 +52,6 @@
         height: 100%;
         background-color: $color-secondary-light;
         border-radius: $border-radius-medium;
-        color: #fff;
         text-align: center;
         overflow: hidden;
         backface-visibility: hidden;
@@ -110,10 +100,6 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        color: white;
-        font-size: 1.6rem;
-        letter-spacing: 0.3rem;
-        z-index: 1;
         height: 8rem;
         padding: 2rem 0.5rem;
         padding-top: 3rem;

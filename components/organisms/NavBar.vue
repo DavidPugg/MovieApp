@@ -3,16 +3,16 @@
         <div class="container">
             <div class="nav">
                 <NuxtLink
-                    :to="{ name: 'tvshows', query: { q: 'popular' } }"
+                    to="/tv"
                     class="select"
-                    :class="{ selected: $route.name === 'tvshows' }"
+                    :class="{ selected: $route.params.type === 'tv' }"
                 >
                     Tv Shows
                 </NuxtLink>
                 <NuxtLink
-                    :to="{ name: 'movies', query: { q: 'popular' } }"
+                    to="/movie"
                     class="select"
-                    :class="{ selected: $route.name === 'movies' }"
+                    :class="{ selected: $route.params.type === 'movie' }"
                 >
                     Movies
                 </NuxtLink>
@@ -28,18 +28,14 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api';
+    import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api';
     export default defineComponent({
         setup() {
             const router = useRouter();
-            const route = useRoute();
             const userInput = ref<string>('');
 
             const search = () => {
-                router.push({
-                    name: route.value.name as string,
-                    query: { s: userInput.value },
-                });
+                router.push(`/search?s=${userInput.value}&page=1`);
                 userInput.value = '';
             };
             return { userInput, search };

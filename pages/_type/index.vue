@@ -26,11 +26,11 @@
             );
 
             const { fetch, fetchState } = useFetch(async ({ $route }) => {
-                const { page, q } = $route.query;
+                const { query, params } = $route;
                 items.value = await fetchMovies({
-                    type: 'movie',
-                    page: page as String,
-                    query: q as String,
+                    type: params.type,
+                    page: query.page as String,
+                    query: query.q as String,
                 });
             });
             fetch();

@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink class="modal" :to="{ path: `/title/${$route.params.type}/${$route.params.id}/gallery` }">
+    <NuxtLink class="modal" :to="{ path: `/${$route.params.type}/${$route.params.id}/gallery` }">
         <iframe
             class="video"
             :src="`https://www.youtube.com/embed/${$route.params.videoId}?autoplay=1&cc_load_policy=1`"
@@ -12,18 +12,20 @@
 
 <style scoped lang="scss">
     .modal {
-        position: absolute;
+        position: fixed;
+        top: 0;
+        left: 0;
         height: 100%;
         width: 100%;
         background-color: rgba($color: #000000, $alpha: 0.3);
 
         display: flex;
-        align-items: center;
         justify-content: center;
     }
 
     .video {
-        height: 70%;
+        margin: 15vh;
+        height: 70vh;
         width: 70%;
     }
 </style>

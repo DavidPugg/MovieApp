@@ -1,25 +1,28 @@
 <template>
-    <div v-if="!fetchState.pending" class="container">
-        <div class="content">
-            <h1 class="title heading-1">Videos</h1>
-            <div class="videos">
-                <img
-                    v-for="video in videos"
-                    :key="video.id"
-                    class="videos__img"
-                    :src="`http://img.youtube.com/vi/${video.key}/0.jpg`"
-                    alt=""
-                    @click="openVideo(video.key)"
-                />
+    <div class="relative">
+        <div v-if="!fetchState.pending" class="container">
+            <div class="content">
+                <h1 class="title heading-1">Videos</h1>
+                <div class="videos">
+                    <img
+                        v-for="video in videos"
+                        :key="video.id"
+                        class="videos__img"
+                        :src="`http://img.youtube.com/vi/${video.key}/0.jpg`"
+                        alt=""
+                        @click="openVideo(video.key)"
+                    />
+                </div>
             </div>
         </div>
-        <NuxtChild />
+                        <NuxtChild />
     </div>
 </template>
 
 <script lang="ts">
     import { ref, useFetch, useRoute, useRouter } from '@nuxtjs/composition-api';
     import { Video } from '~/interfaces/Movie';
+    import { fetchMovieVideos } from '~/utils/MoviesAPI';
 
     export default {
         layout: 'noNavbar',
@@ -28,10 +31,9 @@
             const router = useRouter();
             const route = useRoute();
             const videos = ref<Video[]>([]);
-            const { fetch, fetchState } = useFetch(async ({ $axios, $route }) => {
-                const { results } = await $axios.$get(
-                    `https://api.themoviedb.org/3/${$route.params.type}/${$route.params.id}/videos?api_key=${process.env.apiKey}&language=en-US`,
-                );
+            const { fetch, fetchState } = useFetch(async ({ $route }) => {
+                const { type, id } = $route.params;
+                const { results } = await fetchMovieVideos({ type, id });
                 videos.value = results;
             });
 
@@ -47,6 +49,10 @@
 </script>
 
 <style lang="scss" scoped>
+    .relative {
+        position: relative;
+    }
+
     .title {
         line-height: 1;
         border-bottom: 1px solid $color-primary-light;
